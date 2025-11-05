@@ -2,6 +2,7 @@ package com.clinicavet.controllers;
 
 import com.clinicavet.model.entities.User;
 import com.clinicavet.model.services.IUserService;
+import com.clinicavet.model.services.IOwnerService;
 import com.clinicavet.model.services.RolService;
 import com.clinicavet.views.Login;
 import com.clinicavet.views.MainWindow;
@@ -13,10 +14,12 @@ public class LoginController {
 
     private final IUserService userService;
     private final RolService rolService;
+    private final IOwnerService ownerService;
 
-    public LoginController(IUserService userService, RolService rolService) {
+    public LoginController(IUserService userService, RolService rolService, IOwnerService ownerService) {
         this.userService = userService;
         this.rolService = rolService;
+        this.ownerService = ownerService;
     }
 
 
@@ -25,9 +28,9 @@ public class LoginController {
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             if (user.getPassword().equals(password) && user.isActivo()) {
-                // Abrir MainWindow pasando el usuario autenticado y servicios
+                
                 SwingUtilities.invokeLater(() -> {
-                    MainWindow mainWindow = new MainWindow(user, userService, rolService, this);
+                    MainWindow mainWindow = new MainWindow(user, userService, rolService, ownerService, this);
                     mainWindow.setVisible(true);
                 });
                 loginView.dispose();

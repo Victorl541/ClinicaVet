@@ -3,9 +3,11 @@ package com.clinicavet.views;
 import com.clinicavet.controllers.LoginController;
 import com.clinicavet.controllers.MainController;
 import com.clinicavet.model.entities.User;
+import com.clinicavet.model.services.IOwnerService;
 import com.clinicavet.model.services.IUserService;
 import com.clinicavet.model.services.RolService;
 import com.clinicavet.views.panels.ListUsersPanelAdapter;
+import com.clinicavet.views.panels.ListOwnersPanelAdapter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +16,7 @@ public class MainWindow extends JFrame {
 
     private final MainController controller;
     private final User user;
+    private final IOwnerService ownerService;
     private final IUserService userService;
     private final RolService rolService;
     private final LoginController loginController;
@@ -22,6 +25,7 @@ public class MainWindow extends JFrame {
     private JPanel content;
     private CardLayout cardLayout;
     private ListUsersPanelAdapter listUsersPanel;
+    private ListOwnersPanelAdapter listOwnersPanel;
 
     // Panel keys
     private static final String DASHBOARD = "DASHBOARD";
@@ -30,13 +34,15 @@ public class MainWindow extends JFrame {
     private static final String EDIT_USER = "EDIT_USER";
     private static final String DISABLE_USER = "DISABLE_USER";
     private static final String RESET_PASSWORD = "RESET_PASSWORD";
+    private static final String LIST_OWNERS = "LIST_OWNERS";
 
-    public MainWindow(User loggedUser, IUserService userService, RolService rolService, LoginController loginController) {
+    public MainWindow(User loggedUser, IUserService userService, RolService rolService, IOwnerService ownerService, LoginController loginController) {
         this.user = loggedUser;
         this.userService = userService;
         this.rolService = rolService;
         this.loginController = loginController;
-        this.controller = new MainController(loggedUser, userService, rolService);
+        this.ownerService = ownerService;
+        this.controller = new MainController(loggedUser, userService, ownerService, rolService);
         this.controller.setMainWindow(this);
 
         setTitle("Clínica Veterinaria - Panel Principal");
@@ -83,9 +89,10 @@ public class MainWindow extends JFrame {
         JButton btnEditUser = createSidebarButton(" Editar Usuario", e -> showPanel(EDIT_USER));
         JButton btnDisableUser = createSidebarButton(" Desactivar Usuario", e -> showPanel(DISABLE_USER));
         JButton btnResetPassword = createSidebarButton(" Restablecer Contraseña", e -> showPanel(RESET_PASSWORD));
+        JButton btnListOwners = createSidebarButton(" Listar Dueños", e -> showPanel(LIST_OWNERS));
         JButton btnLogout = createSidebarButton(" Cerrar Sesión", e -> logout());
 
-        // Asignación de roles
+        // Asignación de roles (solo ADMIN)
         btnListUsers.putClientProperty("role", "ADMIN");
         btnCreateUser.putClientProperty("role", "ADMIN");
         btnEditUser.putClientProperty("role", "ADMIN");
@@ -96,13 +103,10 @@ public class MainWindow extends JFrame {
         sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
         sidebar.add(btnListUsers);
         sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
-        sidebar.add(btnCreateUser);
-        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
-        sidebar.add(btnEditUser);
-        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
-        sidebar.add(btnDisableUser);
-        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
-        sidebar.add(btnResetPassword);
+
+
+        // Sección de Dueños: solo LISTAR (agregar/editar/buscar/desactivar estarán dentro del panel)
+        sidebar.add(btnListOwners);
 
         sidebar.add(Box.createVerticalGlue());
         sidebar.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -116,12 +120,14 @@ public class MainWindow extends JFrame {
         content.setBackground(Color.WHITE);
 
         content.add(createDashboardPanel(), DASHBOARD);
-        content.add(new com.clinicavet.views.panels.CreateUserPanelAdapter(controller), CREATE_USER);
-        content.add(new com.clinicavet.views.panels.EditUserPanelAdapter(controller), EDIT_USER);
-        content.add(new com.clinicavet.views.panels.DisableUserPanelAdapter(controller), DISABLE_USER);
-        content.add(new com.clinicavet.views.panels.ResetPasswordPanelAdapter(controller), RESET_PASSWORD);
+        // Si deseas, puedes eliminar los paneles individuales y usar solo listUsersPanel.
+        
         listUsersPanel = new com.clinicavet.views.panels.ListUsersPanelAdapter(controller);
         content.add(listUsersPanel, LIST_USERS);
+
+        // Panel único para dueños: listado con botones (agregar/editar/buscar/desactivar)
+        listOwnersPanel = new ListOwnersPanelAdapter(controller);
+        content.add(listOwnersPanel, LIST_OWNERS);
 
         getContentPane().add(content, BorderLayout.CENTER);
 
@@ -192,10 +198,14 @@ public class MainWindow extends JFrame {
         return listUsersPanel;
     }
 
+    public ListOwnersPanelAdapter getListOwnersPanel() {
+        return listOwnersPanel;
+    }
+
     private void logout() {
         dispose();
         SwingUtilities.invokeLater(() -> {
-            LoginController newLoginController = new LoginController(userService, rolService);
+            LoginController newLoginController = new LoginController(userService, rolService, ownerService);
             Login login = new Login(newLoginController);
             login.setVisible(true);
         });
