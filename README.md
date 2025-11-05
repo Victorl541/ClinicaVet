@@ -1,7 +1,7 @@
 # 🐶 ClínicaVet - Aplicación de Escritorio en Java
 
 Aplicación de escritorio desarrollada en **Java** para la gestión de una **Clínica Veterinaria**.  
-Permite administrar usuarios, roles y paneles personalizados para **médicos**, **auxiliares** y **administradores**, facilitando la organización y control de la información interna del centro veterinario.
+Permite administrar usuarios, roles y dependiendo del rol puedes o no hacer ciertas funciones,**médicos**, **auxiliares** y **administradores**, facilitando la organización y control de la información interna del centro veterinario.
 
 ---
 
