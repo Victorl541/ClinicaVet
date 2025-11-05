@@ -1,145 +1,74 @@
 package com.clinicavet.views;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import com.clinicavet.controllers.LoginController;
 
+import javax.swing.*;
+import java.awt.*;
 
-import com.clinicavet.controllers.LoginControler;
+public class Login extends JFrame {
 
-import javax.swing.BorderFactory;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.GridLayout;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.Font;
-
-
-public class Login extends JFrame {	
-	private final LoginControler loginControler;
+    private final LoginController controller;
     private JTextField txtEmail;
     private JPasswordField txtPassword;
 
-    public Login(LoginControler loginControler) {
-        this.loginControler = loginControler;
+    public Login(LoginController controller) {
+        this.controller = controller;
         initComponents();
     }
 
     private void initComponents() {
         setTitle("Login - Clínica Veterinaria");
-        setSize(500, 350);
+        setSize(480, 360);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
-        // Panel principal con borde y márgenes
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBorder(new EmptyBorder(30, 40, 30, 40));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         mainPanel.setBackground(Color.WHITE);
 
-        // Panel del título
-        JPanel titlePanel = new JPanel(new BorderLayout());
-        titlePanel.setBackground(Color.WHITE);
-        titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
+        JLabel title = new JLabel("Clínica Veterinaria", SwingConstants.CENTER);
+        title.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        title.setForeground(new Color(0, 102, 204));
+        mainPanel.add(title, BorderLayout.NORTH);
 
-        JLabel clinicLabel = new JLabel("Clínica Veterinaria", SwingConstants.CENTER);
-        clinicLabel.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        clinicLabel.setForeground(new Color(0, 102, 204)); // Azul profesional
+        JPanel form = new JPanel(new GridBagLayout());
+        form.setBackground(Color.WHITE);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(8, 8, 8, 8);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        titlePanel.add(clinicLabel, BorderLayout.NORTH);
-       
+        gbc.gridx = 0; gbc.gridy = 0;
+        form.add(new JLabel("Email:"), gbc);
+        gbc.gridx = 1;
+        txtEmail = new JTextField(20);
+        form.add(txtEmail, gbc);
 
-        // Panel de formulario
-        JPanel formPanel = new JPanel(new GridLayout(3, 1, 10, 15));
-        formPanel.setBackground(Color.WHITE);
-        formPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        gbc.gridx = 0; gbc.gridy = 1;
+        form.add(new JLabel("Contraseña:"), gbc);
+        gbc.gridx = 1;
+        txtPassword = new JPasswordField(20);
+        form.add(txtPassword, gbc);
 
-        // Panel para email
-        JPanel emailPanel = new JPanel(new BorderLayout(10, 5));
-        emailPanel.setBackground(Color.WHITE);
-        JLabel lblEmail = new JLabel("Email:");
-        lblEmail.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        lblEmail.setForeground(new Color(51, 51, 51));
-        txtEmail = new JTextField();
-        txtEmail.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        txtEmail.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200)),
-            BorderFactory.createEmptyBorder(8, 10, 8, 10)
-        ));
-        emailPanel.add(lblEmail, BorderLayout.WEST);
-        emailPanel.add(txtEmail, BorderLayout.CENTER);
-
-        // Panel para contraseña
-        JPanel passwordPanel = new JPanel(new BorderLayout(10, 5));
-        passwordPanel.setBackground(Color.WHITE);
-        JLabel lblPassword = new JLabel("Contraseña:");
-        lblPassword.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-        lblPassword.setForeground(new Color(51, 51, 51));
-        txtPassword = new JPasswordField();
-        txtPassword.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        txtPassword.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200)),
-            BorderFactory.createEmptyBorder(8, 10, 8, 10)
-        ));
-        passwordPanel.add(lblPassword, BorderLayout.WEST);
-        passwordPanel.add(txtPassword, BorderLayout.CENTER);
-
-        // Botón de login
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         JButton btnLogin = new JButton("Ingresar");
-        btnLogin.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnLogin.setBackground(new Color(0, 102, 204));
         btnLogin.setForeground(Color.WHITE);
         btnLogin.setFocusPainted(false);
-        btnLogin.setBorder(BorderFactory.createEmptyBorder(12, 20, 12, 20));
-        btnLogin.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        // Efecto hover para el botón
-        btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnLogin.setBackground(new Color(0, 82, 184));
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnLogin.setBackground(new Color(0, 102, 204));
-            }
-        });
-
         btnLogin.addActionListener(e -> onLogin());
+        form.add(btnLogin, gbc);
 
-        // Agregar componentes al formulario
-        formPanel.add(emailPanel);
-        formPanel.add(passwordPanel);
-        formPanel.add(btnLogin);
-
-        // Agregar todo al panel principal
-        mainPanel.add(titlePanel, BorderLayout.NORTH);
-        mainPanel.add(formPanel, BorderLayout.CENTER);
-
-        getContentPane().add(mainPanel);
+        mainPanel.add(form, BorderLayout.CENTER);
+        add(mainPanel);
     }
 
     private void onLogin() {
         String email = txtEmail.getText().trim();
         String password = new String(txtPassword.getPassword());
-
-        boolean success = loginControler.login(email, password);
-
-        if (success) {
-            JOptionPane.showMessageDialog(this,
-                    "Inicio de sesión exitoso",
-                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
-            loginControler.redirectToMainMenu();
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    "Usuario o contraseña incorrectos",
-                    "Error", JOptionPane.ERROR_MESSAGE);
+        boolean ok = controller.login(email, password, this);
+        if (!ok) {
+            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
