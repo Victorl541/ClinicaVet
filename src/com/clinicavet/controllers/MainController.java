@@ -2,15 +2,18 @@ package com.clinicavet.controllers;
 
 import com.clinicavet.model.entities.User;
 import com.clinicavet.model.entities.Owner;
+import com.clinicavet.model.entities.Pet;
 import com.clinicavet.model.entities.Rol;
 import com.clinicavet.model.services.IUserService;
 import com.clinicavet.model.services.IOwnerService;
+import com.clinicavet.model.services.IPetService;
 import com.clinicavet.model.services.RolService;
 import com.clinicavet.views.MainWindow;
 
 import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class MainController {
 
@@ -18,13 +21,15 @@ public class MainController {
     public final IUserService userService;
     public final IOwnerService ownerService;
     public final RolService rolService;
+    public final IPetService petService;
     private MainWindow mainWindow;
 
-    public MainController(User loggedUser, IUserService userService, IOwnerService ownerService, RolService rolService) {
+    public MainController(User loggedUser, IUserService userService, IOwnerService ownerService, RolService rolService, IPetService petService) {
         this.loggedUser = loggedUser;
         this.userService = userService;
         this.ownerService = ownerService;
         this.rolService = rolService;
+        this.petService = petService;
     }
 
     public void setMainWindow(MainWindow mainWindow) {
@@ -50,7 +55,7 @@ public class MainController {
         }
 
         try {
-            userService.createUser(new com.clinicavet.model.entities.User(name, email, password, rolOpt.get()));
+            userService.createUser(new User(name, email, password, rolOpt.get()));
             JOptionPane.showMessageDialog(null, "Usuario creado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
             if (mainWindow != null && mainWindow.getListUsersPanel() != null) {
@@ -153,7 +158,6 @@ public class MainController {
     }
 
     // ==================== DUEÑO ====================
-    // ... (mismos métodos de dueño) ...
 
     public void createOwner(String id, String name, String phone, String address, String email) {
         try {
@@ -171,7 +175,6 @@ public class MainController {
         }
     }
 
-    // resto de métodos de dueño (findOwnerByQuery, etc.) quedan igual...
     public Optional<Owner> findOwnerByQuery(String query) {
         if (query == null) return Optional.empty();
         String q = query.trim().toLowerCase();
@@ -236,6 +239,64 @@ public class MainController {
     public List<Owner> listAllOwners() {
         return ownerService.findAll();
     }
+
+    // ==================== MASCOTA ====================
+
+    public void createPet(int age, String name, String sex, String species, String breed, String allergies, String vaccines, String medicalNotes, double weight, Owner owner) {
+        try {
+            if (name == null || name.trim().isEmpty()) throw new IllegalArgumentException("Nombre obligatorio");
+            petService.createPet(new Pet(age, name, sex, species, breed, allergies, vaccines, medicalNotes, weight, owner));
+            JOptionPane.showMessageDialog(null, "Mascota registrada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            if (mainWindow != null && mainWindow.getListPetsPanel() != null) {
+                try { mainWindow.getListPetsPanel().reload(); } catch (Exception ex) { /* no-op */ }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public Optional<Pet> findPetById(UUID id) {
+        return petService.findById(id);
+    }
+
+    public Optional<Pet> findPetByQuery(String query) {
+        if (query == null) return Optional.empty();
+        String q = query.trim().toLowerCase();
+        return petService.listPets().stream()
+                .filter(p -> (p.getName() != null && p.getName().toLowerCase().contains(q))
+                        || (p.getSpecies() != null && p.getSpecies().toLowerCase().contains(q))
+                        || (p.getBreed() != null && p.getBreed().toLowerCase().contains(q)))
+                .findFirst();
+    }
+
+    public void updatePet(Pet pet) {
+        try {
+            petService.updatePet(pet);
+            JOptionPane.showMessageDialog(null, "Mascota actualizada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            if (mainWindow != null && mainWindow.getListPetsPanel() != null) {
+                try { mainWindow.getListPetsPanel().reload(); } catch (Exception ex) { /* no-op */ }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void deletePet(UUID id) {
+        try {
+            petService.deletePet(id);
+            JOptionPane.showMessageDialog(null, "Mascota eliminada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            if (mainWindow != null && mainWindow.getListPetsPanel() != null) {
+                try { mainWindow.getListPetsPanel().reload(); } catch (Exception ex) { /* no-op */ }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public List<Pet> listAllPets() {
+        return petService.listPets();
+    }
+
 
     // ==================== UTILIDADES ====================
 
