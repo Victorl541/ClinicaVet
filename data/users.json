@@ -1,0 +1,6 @@
+{
+  "nextId":2,
+  "users":[
+    {"id":1,"name":"admin","email":"admin","password":"1234","activo":true,"rolId":1}
+  ]
+}
