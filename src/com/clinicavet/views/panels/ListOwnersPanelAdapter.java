@@ -21,7 +21,6 @@ public class ListOwnersPanelAdapter extends JPanel {
     public final JButton btnEdit = new JButton("Editar");
     public final JButton btnDeactivate = new JButton("Desactivar");
     public final JButton btnSearch = new JButton("Buscar");
-    public final JButton btnRefresh = new JButton("Refrescar");
     public final JButton btnClear = new JButton("Limpiar");
 
     private final JTextField txtName = new JTextField(15);
@@ -100,7 +99,6 @@ public class ListOwnersPanelAdapter extends JPanel {
         searchPanel.add(new JLabel("Buscar (nombre / email / teléfono / id):"));
         searchPanel.add(txtSearch);
         searchPanel.add(btnSearch);
-        searchPanel.add(btnRefresh);
         add(searchPanel, BorderLayout.SOUTH);
 
         revalidate();
@@ -227,12 +225,6 @@ public class ListOwnersPanelAdapter extends JPanel {
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontró dueño", "Info", JOptionPane.INFORMATION_MESSAGE);
             }
-        });
-
-        // refrescar
-        btnRefresh.addActionListener(e -> {
-            reload();
-            clearFields();
         });
 
         // limpiar formulario

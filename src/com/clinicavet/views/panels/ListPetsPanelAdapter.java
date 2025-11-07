@@ -39,7 +39,6 @@ public class ListPetsPanelAdapter extends JPanel {
     public final JButton btnEdit = new JButton("Editar");
     public final JButton btnDelete = new JButton("Eliminar");
     public final JButton btnSearch = new JButton("Buscar");
-    public final JButton btnRefresh = new JButton("Refrescar");
     public final JButton btnClear = new JButton("Limpiar");
     public final JButton btnSelectOwner = new JButton("Buscar Dueño");
 
@@ -92,7 +91,6 @@ public class ListPetsPanelAdapter extends JPanel {
         searchPanel.add(new JLabel("Buscar (nombre / especie / raza):"));
         searchPanel.add(txtSearch);
         searchPanel.add(btnSearch);
-        searchPanel.add(btnRefresh);
         add(searchPanel, BorderLayout.SOUTH);
 
         revalidate();
@@ -358,7 +356,6 @@ public class ListPetsPanelAdapter extends JPanel {
             }
         });
 
-        btnRefresh.addActionListener(e -> { reload(); clearFields(); });
         btnClear.addActionListener(e -> clearFields());
     }
 

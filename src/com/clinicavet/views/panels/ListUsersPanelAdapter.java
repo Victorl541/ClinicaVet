@@ -26,7 +26,6 @@ public class ListUsersPanelAdapter extends JPanel {
     public final JButton btnEdit = new JButton("Editar");
     public final JButton btnDeactivate = new JButton("Desactivar");
     public final JButton btnResetPassword = new JButton("Restablecer contraseña");
-    public final JButton btnRefresh = new JButton("Refrescar");
     public final JButton btnClear = new JButton("Limpiar");
     public final JButton btnSearch = new JButton("Buscar");
 
@@ -97,7 +96,6 @@ public class ListUsersPanelAdapter extends JPanel {
         searchPanel.add(new JLabel("Buscar (email / nombre / id):"));
         searchPanel.add(txtSearch);
         searchPanel.add(btnSearch);
-        searchPanel.add(btnRefresh);
         add(searchPanel, BorderLayout.SOUTH);
 
         revalidate();
@@ -264,7 +262,6 @@ public class ListUsersPanelAdapter extends JPanel {
             }
         });
 
-        btnRefresh.addActionListener(e -> { reload(); clearFields(); });
         btnClear.addActionListener(e -> clearFields());
     }
 
