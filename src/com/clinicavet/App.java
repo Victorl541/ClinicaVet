@@ -3,10 +3,12 @@ package com.clinicavet;
 import com.clinicavet.controllers.LoginController;
 import com.clinicavet.model.entities.Rol;
 import com.clinicavet.model.entities.User;
+import com.clinicavet.model.repositories.AppointmentRepository;
 import com.clinicavet.model.repositories.OwnerRepository;
 import com.clinicavet.model.repositories.PetRepository;
 import com.clinicavet.model.repositories.RolRepository;
 import com.clinicavet.model.repositories.UserRepository;
+import com.clinicavet.model.services.AppointmentService;
 import com.clinicavet.model.services.OwnerService;
 import com.clinicavet.model.services.PetService;
 import com.clinicavet.model.services.RolService;
@@ -28,22 +30,27 @@ public class App {
         RolRepository rolRepo = new RolRepository();
         UserRepository userRepo = new UserRepository();
         PetRepository petRepo = new PetRepository();
+        AppointmentRepository appointmentRepo = new AppointmentRepository();
         
         // Configurar dependencias entre repositorios
         userRepo.setRolRepository(rolRepo);
         petRepo.setOwnerRepository(ownerRepo);
+        appointmentRepo.setUserRepository(userRepo);
+        appointmentRepo.setPetRepository(petRepo);
         
         // Cargar datos desde archivos JSON
         rolRepo.load();
         userRepo.load();
         ownerRepo.load();
         petRepo.load();
+        appointmentRepo.load();
 
         // servicios
         RolService rolService = new RolService(rolRepo);
         UserService userService = new UserService(userRepo, rolService);
         OwnerService ownerService = new OwnerService(ownerRepo);
         PetService petService = new PetService(petRepo);
+        AppointmentService appointmentService = new AppointmentService(appointmentRepo);
 
         // Crear roles y usuario admin solo si no existen
         if (rolService.listRoles().isEmpty()) {
@@ -63,11 +70,12 @@ public class App {
             userRepo.save();
         }
 
-        LoginController loginController = new LoginController(userService, rolService, ownerService, petService);
+        LoginController loginController = new LoginController(userService, rolService, ownerService, petService, appointmentService);
 
         // Agregar shutdown hook para guardar datos al cerrar
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("Guardando datos antes de salir...");
+            appointmentRepo.save();
             petRepo.save();
             ownerRepo.save();
             userRepo.save();

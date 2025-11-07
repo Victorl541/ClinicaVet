@@ -15,7 +15,7 @@ public class OwnerRepository implements IOwnerRepository {
     @Override
     public void addOwner(Owner owner) {
         owners.add(owner);
-        System.out.println("âœ“ DueÃ±o agregado: " + owner.getName() + " | Total: " + owners.size());
+        System.out.println("✓ Dueño agregado: " + owner.getName() + " | Total: " + owners.size());
     }
 
     @Override
