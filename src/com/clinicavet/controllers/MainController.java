@@ -1,19 +1,23 @@
 package com.clinicavet.controllers;
 
-import com.clinicavet.model.entities.User;
+import com.clinicavet.model.entities.Appointment;
+import com.clinicavet.model.entities.Estado;
 import com.clinicavet.model.entities.Owner;
 import com.clinicavet.model.entities.Pet;
 import com.clinicavet.model.entities.Rol;
-import com.clinicavet.model.services.IUserService;
+import com.clinicavet.model.entities.User;
+import com.clinicavet.model.services.IAppointmentService;
 import com.clinicavet.model.services.IOwnerService;
 import com.clinicavet.model.services.IPetService;
+import com.clinicavet.model.services.IUserService;
 import com.clinicavet.model.services.RolService;
 import com.clinicavet.views.MainWindow;
-
-import javax.swing.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import javax.swing.*;
 
 public class MainController {
 
@@ -22,14 +26,16 @@ public class MainController {
     public final IOwnerService ownerService;
     public final RolService rolService;
     public final IPetService petService;
+    public final IAppointmentService appointmentService;
     private MainWindow mainWindow;
 
-    public MainController(User loggedUser, IUserService userService, IOwnerService ownerService, RolService rolService, IPetService petService) {
+    public MainController(User loggedUser, IUserService userService, IOwnerService ownerService, RolService rolService, IPetService petService, IAppointmentService appointmentService) {
         this.loggedUser = loggedUser;
         this.userService = userService;
         this.ownerService = ownerService;
         this.rolService = rolService;
         this.petService = petService;
+        this.appointmentService = appointmentService;
     }
 
     public void setMainWindow(MainWindow mainWindow) {
@@ -295,6 +301,104 @@ public class MainController {
 
     public List<Pet> listAllPets() {
         return petService.listPets();
+    }
+
+    // ==================== CITAS ====================
+
+    public boolean createAppointment(LocalDate fecha, LocalTime hora, int duracion, int medicoId, 
+                                    UUID mascotaId, String motivo, Estado estado) {
+        try {
+            Optional<User> medicoOpt = userService.listUsers().stream()
+                .filter(u -> u.getId() == medicoId).findFirst();
+            Optional<Pet> mascotaOpt = petService.findById(mascotaId);
+            
+            if (medicoOpt.isEmpty() || mascotaOpt.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Médico o mascota no encontrados", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            
+            Appointment appointment = new Appointment(fecha, hora, duracion, medicoOpt.get(), 
+                                                      mascotaOpt.get(), motivo, estado);
+            boolean success = appointmentService.createAppointment(appointment);
+            
+            if (mainWindow != null && mainWindow.getListAppointmentsPanel() != null) {
+                try { mainWindow.getListAppointmentsPanel().reload(); } catch (Exception ex) { /* no-op */ }
+            }
+            
+            return success;
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
+    public boolean updateAppointment(UUID id, LocalDate fecha, LocalTime hora, int duracion, int medicoId, 
+                                    UUID mascotaId, String motivo, Estado estado) {
+        try {
+            Optional<Appointment> appointmentOpt = appointmentService.getAppointmentById(id);
+            if (appointmentOpt.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Cita no encontrada", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            
+            Optional<User> medicoOpt = userService.listUsers().stream()
+                .filter(u -> u.getId() == medicoId).findFirst();
+            Optional<Pet> mascotaOpt = petService.findById(mascotaId);
+            
+            if (medicoOpt.isEmpty() || mascotaOpt.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Médico o mascota no encontrados", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            
+            Appointment appointment = appointmentOpt.get();
+            appointment.setFecha(fecha);
+            appointment.setHora(hora);
+            appointment.setDuracion(duracion);
+            appointment.setMedico(medicoOpt.get());
+            appointment.setMascota(mascotaOpt.get());
+            appointment.setMotivo(motivo);
+            appointment.setEstado(estado);
+            
+            boolean success = appointmentService.updateAppointment(appointment);
+            
+            if (mainWindow != null && mainWindow.getListAppointmentsPanel() != null) {
+                try { mainWindow.getListAppointmentsPanel().reload(); } catch (Exception ex) { /* no-op */ }
+            }
+            
+            return success;
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
+    public void changeAppointmentStatus(UUID id, Estado newStatus) {
+        try {
+            Optional<Appointment> appointmentOpt = appointmentService.getAppointmentById(id);
+            if (appointmentOpt.isPresent()) {
+                Appointment appointment = appointmentOpt.get();
+                appointment.setEstado(newStatus);
+                appointmentService.updateAppointment(appointment);
+                
+                if (mainWindow != null && mainWindow.getListAppointmentsPanel() != null) {
+                    try { mainWindow.getListAppointmentsPanel().reload(); } catch (Exception ex) { /* no-op */ }
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public Optional<Appointment> findAppointmentById(UUID id) {
+        return appointmentService.getAppointmentById(id);
+    }
+
+    public List<Appointment> listAllAppointments() {
+        return appointmentService.listAppointments();
+    }
+
+    public List<User> listAllUsers() {
+        return userService.listUsers();
     }
 
 

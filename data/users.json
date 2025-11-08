@@ -1,0 +1,10 @@
+{
+  "nextId":6,
+  "users":[
+    {"id":1,"name":"admin","email":"admin","password":"1234","activo":true,"rolId":1},
+    {"id":2,"name":"Dr. Carlos Mendoza","email":"carlos.mendoza@clinica.com","password":"medico123","activo":true,"rolId":2},
+    {"id":3,"name":"Dra. Ana García","email":"ana.garcia@clinica.com","password":"medico123","activo":true,"rolId":2},
+    {"id":4,"name":"Dr. Luis Ramírez","email":"luis.ramirez@clinica.com","password":"medico123","activo":true,"rolId":2},
+    {"id":5,"name":"María López","email":"maria.lopez@clinica.com","password":"aux123","activo":true,"rolId":3}
+  ]
+}

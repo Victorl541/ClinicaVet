@@ -3,16 +3,17 @@ package com.clinicavet.views;
 import com.clinicavet.controllers.LoginController;
 import com.clinicavet.controllers.MainController;
 import com.clinicavet.model.entities.User;
+import com.clinicavet.model.services.IAppointmentService;
 import com.clinicavet.model.services.IOwnerService;
-import com.clinicavet.model.services.IUserService;
 import com.clinicavet.model.services.IPetService;
+import com.clinicavet.model.services.IUserService;
 import com.clinicavet.model.services.RolService;
+import com.clinicavet.views.panels.ListAppointmentsPanelAdapter;
 import com.clinicavet.views.panels.ListOwnersPanelAdapter;
 import com.clinicavet.views.panels.ListPetsPanelAdapter;
 import com.clinicavet.views.panels.ListUsersPanelAdapter;
-
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 public class MainWindow extends JFrame {
 
@@ -22,6 +23,7 @@ public class MainWindow extends JFrame {
     private final IUserService userService;
     private final RolService rolService;
     private final IPetService petService;
+    private final IAppointmentService appointmentService;
     private final LoginController loginController;
 
     private JPanel sidebar;
@@ -30,28 +32,31 @@ public class MainWindow extends JFrame {
     private ListUsersPanelAdapter listUsersPanel;
     private ListOwnersPanelAdapter listOwnersPanel;
     private ListPetsPanelAdapter listPetsPanel;
+    private ListAppointmentsPanelAdapter listAppointmentsPanel;
 
     // Panel keys
     private static final String DASHBOARD = "DASHBOARD";
     private static final String LIST_USERS = "LIST_USERS";
     private static final String LIST_PETS = "LIST_PETS";
     private static final String LIST_OWNERS = "LIST_OWNERS";
+    private static final String LIST_APPOINTMENTS = "LIST_APPOINTMENTS";
 
-    public MainWindow(User loggedUser, IUserService userService, RolService rolService, IOwnerService ownerService, IPetService petService, LoginController loginController) {
+    public MainWindow(User loggedUser, IUserService userService, RolService rolService, IOwnerService ownerService, IPetService petService, IAppointmentService appointmentService, LoginController loginController) {
         this.user = loggedUser;
         this.userService = userService;
         this.rolService = rolService;
         this.loginController = loginController;
         this.ownerService = ownerService;
         this.petService = petService;
-        this.controller = new MainController(loggedUser, userService, ownerService, rolService, petService);
+        this.appointmentService = appointmentService;
+        this.controller = new MainController(loggedUser, userService, ownerService, rolService, petService, appointmentService);
         this.controller.setMainWindow(this);
 
         setTitle("Clínica Veterinaria - Panel Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1200, 700);
+        setSize(1400, 850);
         setLocationRelativeTo(null);
-        setMinimumSize(new Dimension(1000, 600));
+        setMinimumSize(new Dimension(1200, 700));
 
         initUI();
         configureByRole();
@@ -89,6 +94,7 @@ public class MainWindow extends JFrame {
         JButton btnListUsers = createSidebarButton(" Listar Usuarios", e -> showPanel(LIST_USERS));
         JButton btnListPets = createSidebarButton(" Listar Mascotas", e -> showPanel(LIST_PETS));
         JButton btnListOwners = createSidebarButton(" Listar Dueños", e -> showPanel(LIST_OWNERS));
+        JButton btnListAppointments = createSidebarButton(" Agenda de Citas", e -> showPanel(LIST_APPOINTMENTS));
         JButton btnLogout = createSidebarButton(" Cerrar Sesión", e -> logout());
 
         // Asignación de roles (solo ADMIN para usuarios)
@@ -101,8 +107,10 @@ public class MainWindow extends JFrame {
         sidebar.add(btnListPets);
         sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        // Sección de Dueños y logout
+        // Sección de Dueños y Citas
         sidebar.add(btnListOwners);
+        sidebar.add(Box.createRigidArea(new Dimension(0, 10)));
+        sidebar.add(btnListAppointments);
 
         sidebar.add(Box.createVerticalGlue());
         sidebar.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -125,6 +133,9 @@ public class MainWindow extends JFrame {
 
         listOwnersPanel = new ListOwnersPanelAdapter(controller);
         content.add(listOwnersPanel, LIST_OWNERS);
+
+        listAppointmentsPanel = new ListAppointmentsPanelAdapter(controller);
+        content.add(listAppointmentsPanel, LIST_APPOINTMENTS);
 
         getContentPane().add(content, BorderLayout.CENTER);
 
@@ -203,10 +214,14 @@ public class MainWindow extends JFrame {
         return listPetsPanel;
     }
 
+    public ListAppointmentsPanelAdapter getListAppointmentsPanel() {
+        return listAppointmentsPanel;
+    }
+
     private void logout() {
         dispose();
         SwingUtilities.invokeLater(() -> {
-            LoginController newLoginController = new LoginController(userService, rolService, ownerService, petService);
+            LoginController newLoginController = new LoginController(userService, rolService, ownerService, petService, appointmentService);
             Login login = new Login(newLoginController);
             login.setVisible(true);
         });

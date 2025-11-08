@@ -1,0 +1,8 @@
+[
+  {"id":"1010234567","name":"Juan Pérez","phone":"3001234567","address":"Calle 10 #20-30, Pereira","email":"juan.perez@email.com","activo":true},
+  {"id":"1020345678","name":"María Rodríguez","phone":"3112345678","address":"Carrera 15 #25-40, Pereira","email":"maria.rodriguez@email.com","activo":true},
+  {"id":"1030456789","name":"Pedro Gómez","phone":"3223456789","address":"Avenida 30 de Agosto #45-20, Pereira","email":"pedro.gomez@email.com","activo":true},
+  {"id":"1040567890","name":"Laura Martínez","phone":"3134567890","address":"Calle 18 #12-25, Dosquebradas","email":"laura.martinez@email.com","activo":true},
+  {"id":"1050678901","name":"Carlos Sánchez","phone":"3145678901","address":"Carrera 7 #35-15, Pereira","email":"carlos.sanchez@email.com","activo":true},
+  {"id":"1060789012","name":"Ana Torres","phone":"3156789012","address":"Calle 25 #18-30, La Virginia","email":"ana.torres@email.com","activo":true}
+]
