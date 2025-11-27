@@ -40,7 +40,7 @@ public class UserRepository implements IUserRepository{
 	@Override
 	public Optional<User> findByEmail(String email) {
 	    return users.stream()
-	                .filter(user -> user.geteMail().equals(email))
+	                .filter(user -> user.getEmail().equals(email))
 	                .findFirst();
 	}
 
@@ -70,7 +70,7 @@ public class UserRepository implements IUserRepository{
 				User u = users.get(i);
 				json.append("    {\"id\":").append(u.getId())
 					.append(",\"name\":").append(JsonHelper.escapeJson(u.getName()))
-					.append(",\"email\":").append(JsonHelper.escapeJson(u.geteMail()))
+					.append(",\"email\":").append(JsonHelper.escapeJson(u.getEmail()))
 					.append(",\"password\":").append(JsonHelper.escapeJson(u.getPassword()))
 					.append(",\"activo\":").append(u.isActivo())
 					.append(",\"rolId\":").append(u.getRol() != null ? u.getRol().getId() : 0)

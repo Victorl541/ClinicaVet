@@ -9,8 +9,8 @@ Permite administrar usuarios, roles, dueños, mascotas y **agenda de citas**, fa
 
 - 🧩 **Arquitectura modular** basada en paquetes (`controllers`, `model`, `repositories`, `services`, `views`).
 - 👩‍⚕️ **Gestión de usuarios y roles:** permite crear, editar y deshabilitar usuarios según su rol (ADMIN, MEDICO, AUXILIAR).
-- �‍👩‍👧 **Gestión de dueños:** registro completo de propietarios de mascotas con cédula, contacto y dirección.
-- � **Gestión de mascotas:** registro de mascotas con historial médico, vacunas, alergias y notas.
+- **Gestión de dueños:** registro completo de propietarios de mascotas con cédula, contacto y dirección.
+- **Gestión de mascotas:** registro de mascotas con historial médico, vacunas, alergias y notas.
 - 📅 **Agenda de citas (RF5):** 
   - Programación de citas médicas con fecha, hora y duración (15, 30 o 60 minutos)
   - Asignación de médico y mascota

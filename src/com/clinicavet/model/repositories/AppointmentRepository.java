@@ -32,7 +32,7 @@ public class AppointmentRepository implements IAppointmentRepository {
     @Override
     public void addAppointment(Appointment appointment) {
         appointments.add(appointment);
-        System.out.println("✓ Cita agregada: " + appointment.getMascota().getName() + " - " + 
+        System.out.println("Cita agregada: " + appointment.getMascota().getName() + " - " + 
                          appointment.getFecha() + " " + appointment.getHora() + " | Total: " + appointments.size());
     }
 

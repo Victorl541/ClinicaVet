@@ -8,5 +8,6 @@
   {"id":"a7b8c9d0-e1f2-3456-1234-567890123456","name":"Bruno","species":"Perro","breed":"Pastor Alemán","sex":"Macho","age":6,"weight":35.0,"ownerId":"1050678901","allergies":"Ninguna","vaccines":"Rabia, Parvovirus, Moquillo, Leptospirosis","medicalNotes":"Displasia de cadera leve"},
   {"id":"b8c9d0e1-f2a3-4567-2345-678901234567","name":"Nala","species":"Gato","breed":"Mestizo","sex":"Hembra","age":2,"weight":3.9,"ownerId":"1050678901","allergies":"Ninguna","vaccines":"Triple felina","medicalNotes":"Rescatada hace 1 año"},
   {"id":"c9d0e1f2-a3b4-5678-3456-789012345678","name":"Firulais","species":"Perro","breed":"Mestizo","sex":"Macho","age":7,"weight":18.5,"ownerId":"1060789012","allergies":"Ninguna","vaccines":"Rabia, Parvovirus","medicalNotes":"Perro callejero adoptado"},
-  {"id":"d0e1f2a3-b4c5-6789-4567-890123456789","name":"Garfield","species":"Gato","breed":"Naranja","sex":"Macho","age":4,"weight":6.2,"ownerId":"1060789012","allergies":"Ninguna","vaccines":"Triple felina, Rabia","medicalNotes":"Tendencia a sobrepeso"}
+  {"id":"d0e1f2a3-b4c5-6789-4567-890123456789","name":"Garfield","species":"Gato","breed":"Naranja","sex":"Macho","age":4,"weight":6.2,"ownerId":"1060789012","allergies":"Ninguna","vaccines":"Triple felina, Rabia","medicalNotes":"Tendencia a sobrepeso"},
+  {"id":"ec86ccca-7ead-42d9-86e3-89367fcc0f56","name":"fifi","species":"Gato","breed":"mixfelino","sex":"Hembra","age":1,"weight":5.0,"ownerId":"1002944425","allergies":"","vaccines":"","medicalNotes":""}
 ]

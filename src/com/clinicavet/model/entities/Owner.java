@@ -1,6 +1,6 @@
 package com.clinicavet.model.entities;
 
-import java.util.UUID;
+
 
 // Clase que representa al dueño de una mascota
 public class Owner {

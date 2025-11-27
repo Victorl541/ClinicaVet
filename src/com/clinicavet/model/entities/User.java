@@ -1,5 +1,7 @@
 package com.clinicavet.model.entities;
 
+import java.util.Optional;
+
 public class User {
 	  
 	private int id;
@@ -50,12 +52,12 @@ public class User {
         return password;
     }
 
-	public String geteMail() {
+	public String getEmail() {
 		return eMail;
 	}
 
-	public void seteMail(String eMail) {
-		this.eMail = eMail;
+	public void setEmail(String email) {
+		this.eMail = email;
 	}
 
 	public int getId() {
@@ -74,8 +76,8 @@ public class User {
 		this.name = name;
 	}
 
-	public void setRol(Rol rol) {
-		this.rol = rol;
+	public void setRol(Optional<Rol> rol) {
+		this.rol = rol.orElse(null);
 		
 	}
 
