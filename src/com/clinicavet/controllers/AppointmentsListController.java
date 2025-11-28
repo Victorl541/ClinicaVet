@@ -20,6 +20,7 @@ public class AppointmentsListController {
     private final IAppointmentService appointmentService;
     private final IPetService petService;
     private final IUserService userService;
+    private List<Appointment> allAppointments;
 
     public AppointmentsListController(AppointmentsListView view, IAppointmentService appointmentService,
                                       IPetService petService, IUserService userService) {
@@ -57,13 +58,16 @@ public class AppointmentsListController {
     }
 
     public void loadAppointments(String filter) {
+        // Siempre cargar la lista completa
+        allAppointments = appointmentService.listAppointments();
+
         List<Appointment> appointments;
 
         if (filter == null || filter.trim().isEmpty()) {
-            appointments = appointmentService.listAppointments();
+            appointments = allAppointments;
         } else {
             String q = filter.trim().toLowerCase();
-            appointments = appointmentService.listAppointments().stream()
+            appointments = allAppointments.stream()
                     .filter(a -> a.getMascota().getName().toLowerCase().contains(q)
                             || a.getMascota().getOwner().getName().toLowerCase().contains(q)
                             || a.getMedico().getName().toLowerCase().contains(q)
@@ -96,7 +100,7 @@ public class AppointmentsListController {
             return;
         }
 
-        List<Appointment> allAppointments = appointmentService.listAppointments();
+        // Usar la lista completa, no la filtrada
         if (selectedRow >= 0 && selectedRow < allAppointments.size()) {
             Appointment appointment = allAppointments.get(selectedRow);
 
@@ -117,7 +121,7 @@ public class AppointmentsListController {
             return;
         }
 
-        List<Appointment> allAppointments = appointmentService.listAppointments();
+        // Usar la lista completa, no la filtrada
         if (selectedRow >= 0 && selectedRow < allAppointments.size()) {
             Appointment appointment = allAppointments.get(selectedRow);
 
@@ -135,8 +139,8 @@ public class AppointmentsListController {
                     JOptionPane.showMessageDialog(view, "Cita cancelada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(view, "No se pudo cancelar la cita", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
                 }
             }
         }
     }
+}

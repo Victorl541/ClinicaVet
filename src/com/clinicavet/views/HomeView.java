@@ -65,7 +65,7 @@ public class HomeView extends JPanel {
 
         // CARD 1: Médicos Activos
         lblMedicos = createStatCardAndAdd(panel,
-                "👨‍⚕️ Médicos Activos",
+                "Médicos Activos",
                 "0",
                 new Color(52, 152, 219),
                 new Color(236, 240, 241)
@@ -73,7 +73,7 @@ public class HomeView extends JPanel {
 
         // CARD 2: Auxiliares Activos
         lblAuxiliares = createStatCardAndAdd(panel,
-                "🩺 Auxiliares Activos",
+                "Auxiliares Activos",
                 "0",
                 new Color(46, 204, 113),
                 new Color(236, 240, 241)
@@ -81,7 +81,7 @@ public class HomeView extends JPanel {
 
         // CARD 3: Mascotas Creadas
         lblMascotas = createStatCardAndAdd(panel,
-                "🐕 Mascotas Creadas",
+                "Mascotas Creadas",
                 "0",
                 new Color(241, 196, 15),
                 new Color(236, 240, 241)
@@ -89,7 +89,7 @@ public class HomeView extends JPanel {
 
         // CARD 4: Dueños Registrados
         lblDuenos = createStatCardAndAdd(panel,
-                "👥 Dueños Registrados",
+                "Dueños Registrados",
                 "0",
                 new Color(155, 89, 182),
                 new Color(236, 240, 241)

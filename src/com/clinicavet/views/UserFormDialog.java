@@ -19,18 +19,25 @@ public class UserFormDialog extends JDialog {
     private JButton btnCancel;
 
     private UserFormDialogController controller;
+    private boolean isEditMode;
 
     public UserFormDialog(User user, IUserService userService, RolService rolService) {
         setTitle(user == null ? "Nuevo Usuario" : "Editar Usuario");
         setModal(true);
-        setSize(450, 350);
+        setSize(450, isEditMode(user) ? 350 : 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
+        this.isEditMode = user != null;
+        
         initComponents();
         
         // Crear controlador y pasar la vista
         this.controller = new UserFormDialogController(this, user, userService, rolService);
+    }
+
+    private boolean isEditMode(User user) {
+        return user != null;
     }
 
     private void initComponents() {
@@ -71,15 +78,25 @@ public class UserFormDialog extends JDialog {
         cbRol = new JComboBox<>();
         mainPanel.add(cbRol, gbc);
 
-        // Fila 5: Estado
-        gbc.gridx = 0; gbc.gridy = 4;
-        mainPanel.add(new JLabel("Estado:"), gbc);
-        gbc.gridx = 1;
-        chkActivo = new JCheckBox("Activo");
-        mainPanel.add(chkActivo, gbc);
+        int nextRow = 4;
+
+        // Fila 5: Estado (SOLO EN MODO EDICIÓN)
+        if (isEditMode) {
+            gbc.gridx = 0; gbc.gridy = nextRow;
+            mainPanel.add(new JLabel("Estado:"), gbc);
+            gbc.gridx = 1;
+            chkActivo = new JCheckBox("Activo");
+            mainPanel.add(chkActivo, gbc);
+            nextRow++;
+        } else {
+            // En modo creación, crear el checkbox oculto pero activo
+            chkActivo = new JCheckBox("Activo");
+            chkActivo.setSelected(true);
+            chkActivo.setVisible(false);
+        }
 
         // Fila 6: Botones
-        gbc.gridx = 0; gbc.gridy = 5; gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = nextRow; gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnPanel.setBackground(Color.WHITE);
@@ -119,5 +136,9 @@ public class UserFormDialog extends JDialog {
 
     public JButton getBtnSave() {
         return btnSave;
+    }
+
+    public boolean isEditMode() {
+        return isEditMode;
     }
 }

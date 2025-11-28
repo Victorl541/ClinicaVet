@@ -19,18 +19,25 @@ public class OwnerFormDialog extends JDialog {
     private JButton btnCancel;
 
     private OwnerFormDialogController controller;
+    private boolean isEditMode;
 
     public OwnerFormDialog(Owner owner, IOwnerService ownerService) {
         setTitle(owner == null ? "Nuevo Dueño" : "Editar Dueño");
         setModal(true);
-        setSize(500, 400);
+        setSize(500, isEditMode(owner) ? 400 : 360);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
+        this.isEditMode = owner != null;
+        
         initComponents();
 
         // Crear controlador y pasar la vista
         this.controller = new OwnerFormDialogController(this, owner, ownerService);
+    }
+
+    private boolean isEditMode(Owner owner) {
+        return owner != null;
     }
 
     private void initComponents() {
@@ -78,15 +85,25 @@ public class OwnerFormDialog extends JDialog {
         txtDireccion = new JTextField(20);
         mainPanel.add(txtDireccion, gbc);
 
-        // Fila 6: Estado
-        gbc.gridx = 0; gbc.gridy = 5;
-        mainPanel.add(new JLabel("Estado:"), gbc);
-        gbc.gridx = 1;
-        chkActivo = new JCheckBox("Activo");
-        mainPanel.add(chkActivo, gbc);
+        int nextRow = 5;
+
+        // Fila 6: Estado (SOLO EN MODO EDICIÓN)
+        if (isEditMode) {
+            gbc.gridx = 0; gbc.gridy = nextRow;
+            mainPanel.add(new JLabel("Estado:"), gbc);
+            gbc.gridx = 1;
+            chkActivo = new JCheckBox("Activo");
+            mainPanel.add(chkActivo, gbc);
+            nextRow++;
+        } else {
+            // En modo creación, crear el checkbox oculto pero activo
+            chkActivo = new JCheckBox("Activo");
+            chkActivo.setSelected(true);
+            chkActivo.setVisible(false);
+        }
 
         // Fila 7: Botones
-        gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = nextRow; gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnPanel.setBackground(Color.WHITE);
@@ -130,5 +147,9 @@ public class OwnerFormDialog extends JDialog {
 
     public JButton getBtnSave() {
         return btnSave;
+    }
+
+    public boolean isEditMode() {
+        return isEditMode;
     }
 }

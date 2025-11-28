@@ -21,14 +21,17 @@ public class AppointmentFormDialog extends JDialog {
     private JButton btnCancel;
 
     private AppointmentFormDialogController controller;
+    private boolean isEditMode;
 
     public AppointmentFormDialog(Appointment appointment, IAppointmentService appointmentService, 
                                   IPetService petService, IUserService userService) {
         setTitle(appointment == null ? "Nueva Cita" : "Editar Cita");
         setModal(true);
-        setSize(500, 450);
+        setSize(500, appointment == null ? 420 : 480);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+        this.isEditMode = appointment != null;
 
         initComponents();
 
@@ -84,15 +87,24 @@ public class AppointmentFormDialog extends JDialog {
         mainPanel.add(new JScrollPane(txtReason), gbc);
         gbc.weighty = 0;
 
-        // Fila 6: Estado
-        gbc.gridx = 0; gbc.gridy = 5;
-        mainPanel.add(new JLabel("Estado:"), gbc);
-        gbc.gridx = 1;
-        cbStatus = new JComboBox<>(new String[]{"Pendiente", "Confirmada", "Cancelada", "Completada"});
-        mainPanel.add(cbStatus, gbc);
+        int nextRow = 5;
+
+        // Fila 6: Estado (SOLO EN MODO EDICIÓN, SIN CANCELADA)
+        if (isEditMode) {
+            gbc.gridx = 0; gbc.gridy = nextRow;
+            mainPanel.add(new JLabel("Estado:"), gbc);
+            gbc.gridx = 1;
+            cbStatus = new JComboBox<>(new String[]{"PENDIENTE", "CONFIRMADA"});
+            mainPanel.add(cbStatus, gbc);
+            nextRow++;
+        } else {
+            // En modo creación, crear combo oculto con PENDIENTE
+            cbStatus = new JComboBox<>(new String[]{"PENDIENTE"});
+            cbStatus.setVisible(false);
+        }
 
         // Fila 7: Botones
-        gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = nextRow; gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         btnPanel.setBackground(Color.WHITE);
@@ -137,5 +149,9 @@ public class AppointmentFormDialog extends JDialog {
 
     public JButton getBtnSave() {
         return btnSave;
+    }
+
+    public boolean isEditMode() {
+        return isEditMode;
     }
 }

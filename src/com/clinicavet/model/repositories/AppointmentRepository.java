@@ -88,16 +88,19 @@ public class AppointmentRepository implements IAppointmentRepository {
     @Override
     public boolean hasOverlap(User medico, LocalDate fecha, LocalTime hora, int duracion, UUID excludeId) {
         LocalTime endTime = hora.plusMinutes(duracion);
-        
+
         return appointments.stream()
-            .filter(a -> !a.getId().equals(excludeId))
-            .filter(a -> a.getMedico().getId() == medico.getId())
-            .filter(a -> a.getFecha().equals(fecha))
-            .filter(a -> a.getEstado() != Estado.CANCELADA)
-            .anyMatch(a -> {
-                LocalTime appointmentEnd = a.getHora().plusMinutes(a.getDuracion());
-                return (hora.isBefore(appointmentEnd) && endTime.isAfter(a.getHora()));
-            });
+                .filter(a -> excludeId == null || !a.getId().equals(excludeId))
+                .filter(a -> a.getMedico().getId() == medico.getId())
+                .filter(a -> a.getFecha().equals(fecha))
+                .anyMatch(a -> {
+                    LocalTime aStart = a.getHora();
+                    LocalTime aEnd = a.getHora().plusMinutes(a.getDuracion());
+                    
+                    // Verificar solapamiento: si la nueva cita comienza antes de que termine la existente
+                    // Y la nueva cita termina después de que comience la existente
+                    return hora.isBefore(aEnd) && endTime.isAfter(aStart);
+                });
     }
 
     public void save() {

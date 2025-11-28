@@ -5,5 +5,6 @@
   {"id":"1040567890","name":"Laura Martínez","phone":"3134567890","address":"Calle 18 #12-25, Dosquebradas","email":"laura.martinez@email.com","activo":true},
   {"id":"1050678901","name":"Carlos Sánchez","phone":"3145678901","address":"Carrera 7 #35-15, Pereira","email":"carlos.sanchez@email.com","activo":true},
   {"id":"1060789012","name":"Ana Torres","phone":"3156789012","address":"Calle 25 #18-30, La Virginia","email":"ana.torres@email.com","activo":true},
-  {"id":"1002944425","name":"victor","phone":"3127859795","address":"cra 6 #3 34","email":"victor@utp.edu.co","activo":true}
+  {"id":"1002944425","name":"victor","phone":"3127859795","address":"cra 6 #3 34","email":"victor@utp.edu.co","activo":false},
+  {"id":"10029855456","name":"naruto","phone":"45642689654","address":"cra 3 #5 44","email":"narut@gmail.com","activo":true}
 ]

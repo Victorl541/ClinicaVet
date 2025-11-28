@@ -68,9 +68,14 @@ public class AppointmentFormDialogController {
             view.getTxtDate().setText(appointmentToEdit.getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             view.getTxtTime().setText(appointmentToEdit.getHora().format(DateTimeFormatter.ofPattern("HH:mm")));
             view.getTxtReason().setText(appointmentToEdit.getMotivo());
-            view.getCbStatus().setSelectedItem(appointmentToEdit.getEstado().toString());
+            
+            // Solo en modo edición, mostrar el estado actual
+            if (view.isEditMode()) {
+                view.getCbStatus().setSelectedItem(appointmentToEdit.getEstado().toString());
+            }
         } else {
-            view.getCbStatus().setSelectedItem("Pendiente");
+            // Modo creación: estado siempre PENDIENTE
+            view.getCbStatus().setSelectedItem("PENDIENTE");
         }
     }
 
@@ -84,7 +89,7 @@ public class AppointmentFormDialogController {
         String date = view.getTxtDate().getText().trim();
         String time = view.getTxtTime().getText().trim();
         String reason = view.getTxtReason().getText().trim();
-        String status = (String) view.getCbStatus().getSelectedItem();
+        String status = view.isEditMode() ? (String) view.getCbStatus().getSelectedItem() : "PENDIENTE";
 
         // Validaciones
         if (petName == null || vetName == null || date.isEmpty() || time.isEmpty() || reason.isEmpty()) {
@@ -121,15 +126,15 @@ public class AppointmentFormDialogController {
             }
 
             if (appointmentToEdit == null) {
-                // Crear nueva cita - duración por defecto 30 minutos
-                Appointment newAppointment = new Appointment(parsedDate, parsedTime, 30, vet, pet, reason, getEstadoFromString("Pendiente"));
+                // Crear nueva cita - duración por defecto 30 minutos, estado PENDIENTE
+                Appointment newAppointment = new Appointment(parsedDate, parsedTime, 30, vet, pet, reason, getEstadoFromString("PENDIENTE"));
                 boolean created = appointmentService.createAppointment(newAppointment);
                 
                 if (created) {
                     JOptionPane.showMessageDialog(view, "Cita creada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                     view.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(view, "No se pudo crear la cita (posible solapamiento)", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(view, "No se pudo crear la cita (posible solapamiento de 30 minutos)", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 // Editar cita existente
@@ -146,7 +151,7 @@ public class AppointmentFormDialogController {
                     JOptionPane.showMessageDialog(view, "Cita actualizada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                     view.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(view, "No se pudo actualizar la cita (posible solapamiento)", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(view, "No se pudo actualizar la cita (posible solapamiento de 30 minutos)", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
@@ -155,6 +160,11 @@ public class AppointmentFormDialogController {
         }
     }
 
+    /**
+     * Convierte un string a enum Estado
+     * @param estado String con el nombre del estado
+     * @return Estado convertido, o PENDIENTE por defecto si hay error
+     */
     private Estado getEstadoFromString(String estado) {
         try {
             return Estado.valueOf(estado.toUpperCase());
