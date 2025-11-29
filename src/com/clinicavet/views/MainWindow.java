@@ -14,6 +14,7 @@ public class MainWindow extends JFrame {
     private CardLayout cardLayout;
     private JLabel lblUserInfo;
     private JButton btnUsers;
+    private JButton btnMedicalRecords;
 
     private MainController controller;
     private LoginController loginController;
@@ -58,6 +59,7 @@ public class MainWindow extends JFrame {
         JButton btnOwners = new JButton("🔑 Dueños");
         JButton btnPets = new JButton("🐕 Mascotas");
         JButton btnAppointments = new JButton("📅 Citas");
+        btnMedicalRecords = new JButton("🩺 Atención Médica");
         JButton btnLogout = new JButton("🚪 Cerrar sesión");
 
         sideMenu.add(btnHome);
@@ -65,6 +67,7 @@ public class MainWindow extends JFrame {
         sideMenu.add(btnOwners);
         sideMenu.add(btnPets);
         sideMenu.add(btnAppointments);
+        sideMenu.add(btnMedicalRecords);
         sideMenu.add(Box.createVerticalGlue());
         sideMenu.add(btnLogout);
 
@@ -92,6 +95,9 @@ public class MainWindow extends JFrame {
         btnAppointments.addActionListener(e -> {
             if (controller != null) controller.openAppointments();
         });
+        btnMedicalRecords.addActionListener(e -> {
+            if (controller != null) controller.openMedicalRecords();
+        });
         btnLogout.addActionListener(e -> {
             if (loginController != null) {
                 loginController.logout();
@@ -117,8 +123,13 @@ public class MainWindow extends JFrame {
     public void setUserPermissions(User user) {
         if (user != null && user.getRol() != null) {
             boolean isAdmin = user.getRol().getName().equals("ADMIN");
+            boolean isMedico = user.getRol().getName().equals("MEDICO");
+            
             btnUsers.setVisible(isAdmin);
             btnUsers.setEnabled(isAdmin);
+            
+            btnMedicalRecords.setVisible(isMedico);
+            btnMedicalRecords.setEnabled(isMedico);
         }
     }
 

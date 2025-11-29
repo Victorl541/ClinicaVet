@@ -4,5 +4,8 @@ public enum Estado {
     PENDIENTE,
     CONFIRMADA,
     CANCELADA,
-    COMPLETADA
+    COMPLETADA,
+    ATENDIDA,
+    NO_ASISTIO,
+    REPROGRAMAR
 }

@@ -2,6 +2,7 @@ package com.clinicavet.controllers;
 
 import com.clinicavet.model.entities.User;
 import com.clinicavet.model.services.IAppointmentService;
+import com.clinicavet.model.services.IMedicalRecordService;
 import com.clinicavet.model.services.IOwnerService;
 import com.clinicavet.model.services.IPetService;
 import com.clinicavet.model.services.IUserService;
@@ -9,10 +10,10 @@ import com.clinicavet.model.services.RolService;
 import com.clinicavet.views.AppointmentsListView;
 import com.clinicavet.views.HomeView;
 import com.clinicavet.views.MainWindow;
+import com.clinicavet.views.MedicalRecordsListView;
 import com.clinicavet.views.OwnersListView;
 import com.clinicavet.views.PetsListView;
 import com.clinicavet.views.UsersListView;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -23,17 +24,20 @@ public class MainController {
     private final IOwnerService ownerService;
     private final IPetService petService;
     private final IAppointmentService appointmentService;
+    private final IMedicalRecordService medicalRecordService;
 
     private MainWindow mainWindow;
     private User currentUser;
 
     public MainController(IUserService userService, RolService rolService, IOwnerService ownerService, 
-                         IPetService petService, IAppointmentService appointmentService) {
+                         IPetService petService, IAppointmentService appointmentService,
+                         IMedicalRecordService medicalRecordService) {
         this.userService = userService;
         this.rolService = rolService;
         this.ownerService = ownerService;
         this.petService = petService;
         this.appointmentService = appointmentService;
+        this.medicalRecordService = medicalRecordService;
     }
 
     public void setMainWindow(MainWindow mainWindow) {
@@ -46,6 +50,10 @@ public class MainController {
 
     public User getCurrentUser() {
         return currentUser;
+    }
+
+    public IUserService getUserService() {
+        return userService;
     }
 
     // ========================
@@ -128,6 +136,16 @@ public class MainController {
         AppointmentsListView view = new AppointmentsListView();
         new AppointmentsListController(view, appointmentService, petService, userService);
         mainWindow.showView("appointments", view);
+    }
+
+    // ========================
+    // MEDICAL RECORDS (Solo MEDICO)
+    // ========================
+
+    public void openMedicalRecords() {
+        MedicalRecordsListView view = new MedicalRecordsListView();
+        new MedicalRecordsListController(view, medicalRecordService, appointmentService, petService);
+        mainWindow.showView("medicalRecords", view);
     }
 
     // ========================
