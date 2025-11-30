@@ -1,7 +1,7 @@
 package com.clinicavet.views;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 public class PaymentRegistrationDialog extends JDialog {
     
@@ -17,7 +17,7 @@ public class PaymentRegistrationDialog extends JDialog {
     private JButton btnCancel;
     
     public PaymentRegistrationDialog(JFrame parent, String invoiceNumber, String clientName, double remaining) {
-        super(parent, "💳 Registrar Pago", true);
+        super(parent, "Registrar Pago", true);
         
         setSize(500, 420);
         setLocationRelativeTo(parent);
@@ -48,7 +48,7 @@ public class PaymentRegistrationDialog extends JDialog {
     private JPanel createInfoPanel() {
         JPanel panel = new JPanel(new GridLayout(3, 1, 10, 10));
         panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(52, 152, 219), 2), 
-                        "📋 Información de la Factura", 
+                        "Información de la Factura", 
                         javax.swing.border.TitledBorder.LEFT, 
                         javax.swing.border.TitledBorder.TOP));
         panel.setBackground(Color.WHITE);
@@ -90,7 +90,7 @@ public class PaymentRegistrationDialog extends JDialog {
     private JPanel createFormPanel() {
         JPanel panel = new JPanel(new GridLayout(3, 1, 10, 15));
         panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(46, 204, 113), 2),
-                        "💰 Detalles del Pago",
+                        "Detalles del Pago",
                         javax.swing.border.TitledBorder.LEFT,
                         javax.swing.border.TitledBorder.TOP));
         panel.setBackground(Color.WHITE);

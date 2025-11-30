@@ -130,15 +130,15 @@ public class MedicalRecordRepository implements IMedicalRecordRepository {
         try {
             String content = JsonHelper.readJsonFile(FILE_NAME);
             if (content == null) {
-                System.out.println("⚠️ Archivo medical_records.json no encontrado o vacío");
+                System.out.println("Archivo medical_records.json no encontrado o vacío");
                 return;
             }
             
-            System.out.println("📋 Cargando registros médicos...");
+            System.out.println("Cargando registros médicos...");
             medicalRecords.clear();
             String[] items = content.replace("[", "").replace("]", "").split("\\},");
             
-            System.out.println("📊 Encontrados " + items.length + " registros en el archivo");
+            System.out.println("Encontrados " + items.length + " registros en el archivo");
             
             for (String item : items) {
                 item = item.trim();
@@ -172,11 +172,11 @@ public class MedicalRecordRepository implements IMedicalRecordRepository {
                     String observaciones = extractString(item, "observaciones");
                     
                     if (mascota == null) {
-                        System.err.println("⚠️ Mascota no encontrada con ID: " + mascotaId);
+                        System.err.println("Mascota no encontrada con ID: " + mascotaId);
                         continue;
                     }
                     if (medico == null) {
-                        System.err.println("⚠️ Médico no encontrado con ID: " + medicoId);
+                        System.err.println("Médico no encontrado con ID: " + medicoId);
                         continue;
                     }
                     
@@ -187,15 +187,15 @@ public class MedicalRecordRepository implements IMedicalRecordRepository {
                     idField.setAccessible(true);
                     idField.set(record, id);
                     medicalRecords.add(record);
-                    System.out.println("✅ Registro cargado: " + mascota.getName() + " - " + fecha + " - " + diagnostico.substring(0, Math.min(30, diagnostico.length())) + "...");
+                    System.out.println("Registro cargado: " + mascota.getName() + " - " + fecha + " - " + diagnostico.substring(0, Math.min(30, diagnostico.length())) + "...");
                 } catch (Exception ex) {
-                    System.err.println("❌ Error al procesar registro: " + ex.getMessage());
+                    System.err.println("Error al procesar registro: " + ex.getMessage());
                     ex.printStackTrace();
                 }
             }
-            System.out.println("✅ Total registros médicos cargados: " + medicalRecords.size());
+            System.out.println("Total registros médicos cargados: " + medicalRecords.size());
         } catch (Exception e) {
-            System.err.println("❌ Error al cargar registros médicos: " + e.getMessage());
+            System.err.println("Error al cargar registros médicos: " + e.getMessage());
             e.printStackTrace();
         }
     }

@@ -1,7 +1,7 @@
 package com.clinicavet.views;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 public class HomeView extends JPanel {
 
@@ -37,7 +37,7 @@ public class HomeView extends JPanel {
         JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         logoPanel.setBackground(new Color(240, 245, 250));
 
-        JLabel lblLogo = new JLabel("🏥");
+        JLabel lblLogo = new JLabel("");
         lblLogo.setFont(new Font("SansSerif", Font.BOLD, 48));
         logoPanel.add(lblLogo);
 

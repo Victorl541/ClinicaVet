@@ -5,10 +5,9 @@ import com.clinicavet.model.entities.InvoiceItem;
 import com.clinicavet.model.entities.Owner;
 import com.clinicavet.model.services.IInvoiceService;
 import com.clinicavet.views.InvoiceFormDialog;
-
-import javax.swing.*;
 import java.time.LocalDate;
 import java.util.UUID;
+import javax.swing.*;
 
 public class InvoiceFormController {
 
@@ -30,11 +29,11 @@ public class InvoiceFormController {
         }
         
         setupListeners();
-        System.out.println("✅ [InvoiceFormController] Listeners configurados");
+        System.out.println("[InvoiceFormController] Listeners configurados");
     }
 
     private void setupListeners() {
-        System.out.println("🔧 Configurando listeners...");
+        System.out.println("Configurando listeners...");
         
         // Agregar item
         view.btnAddItem.addActionListener(e -> addItem());
@@ -71,13 +70,13 @@ public class InvoiceFormController {
             // Validaciones
             if (description.isEmpty()) {
                 showError("Ingresa la descripción del item");
-                System.out.println("⚠️ Descripción vacía");
+                System.out.println("Descripción vacía");
                 return;
             }
 
             if (priceStr.isEmpty()) {
                 showError("Ingresa el precio unitario");
-                System.out.println("⚠️ Precio vacío");
+                System.out.println("Precio vacío");
                 return;
             }
 
@@ -89,13 +88,13 @@ public class InvoiceFormController {
 
             if (quantity <= 0) {
                 showError("La cantidad debe ser mayor a 0");
-                System.out.println("⚠️ Cantidad inválida: " + quantity);
+                System.out.println("Cantidad inválida: " + quantity);
                 return;
             }
 
             if (unitPrice <= 0) {
                 showError("El precio debe ser mayor a 0");
-                System.out.println("⚠️ Precio inválido: " + unitPrice);
+                System.out.println("Precio inválido: " + unitPrice);
                 return;
             }
 
@@ -121,15 +120,15 @@ public class InvoiceFormController {
             view.txtDescription.requestFocus();
 
             System.out.println("   ✓ Campos limpios");
-            System.out.println("✅ Item agregado exitosamente: " + description + " x" + quantity + " @ $" + unitPrice);
+            System.out.println("Item agregado exitosamente: " + description + " x" + quantity + " @ $" + unitPrice);
             System.out.println("   Total items en factura: " + view.getItems().size());
 
         } catch (NumberFormatException ex) {
             showError("Valores numéricos inválidos: " + ex.getMessage());
-            System.err.println("❌ Error al parsear números: " + ex.getMessage());
+            System.err.println("Error al parsear números: " + ex.getMessage());
         } catch (Exception ex) {
             showError("Error al agregar item: " + ex.getMessage());
-            System.err.println("❌ Error al agregar item: ");
+            System.err.println("Error al agregar item: ");
             ex.printStackTrace();
         }
     }
@@ -144,7 +143,7 @@ public class InvoiceFormController {
         
         if (selectedRow < 0) {
             showInfo("Selecciona un item para eliminar");
-            System.out.println("⚠️ No hay item seleccionado");
+            System.out.println("No hay item seleccionado");
             return;
         }
 
@@ -161,7 +160,7 @@ public class InvoiceFormController {
         if (confirm == JOptionPane.YES_OPTION) {
             System.out.println("   ✓ Usuario confirmó eliminación");
             view.removeItem(selectedRow);
-            System.out.println("✅ Item eliminado");
+            System.out.println("Item eliminado");
             System.out.println("   Total items en factura: " + view.getItems().size());
         } else {
             System.out.println("↩️ Eliminación cancelada por el usuario");
@@ -172,14 +171,14 @@ public class InvoiceFormController {
      * Guardar factura (crear o actualizar)
      */
     private void saveInvoice() {
-        System.out.println("\n💾 [InvoiceFormController] Guardando factura...");
+        System.out.println("\n[InvoiceFormController] Guardando factura...");
         
         try {
             // Validar cliente
             Owner owner = view.getSelectedOwner();
             if (owner == null) {
                 showError("Selecciona un cliente válido");
-                System.out.println("⚠️ Cliente no seleccionado");
+                System.out.println("Cliente no seleccionado");
                 return;
             }
 
@@ -188,7 +187,7 @@ public class InvoiceFormController {
             // Validar items
             if (view.getItems().isEmpty()) {
                 showError("Agrega al menos un item a la factura");
-                System.out.println("⚠️ Sin items en la factura");
+                System.out.println("Sin items en la factura");
                 return;
             }
 
@@ -220,7 +219,7 @@ public class InvoiceFormController {
 
         } catch (Exception ex) {
             showError("Error al guardar factura: " + ex.getMessage());
-            System.err.println("❌ Error grave al guardar: ");
+            System.err.println("Error grave al guardar: ");
             ex.printStackTrace();
         }
     }
@@ -260,12 +259,12 @@ public class InvoiceFormController {
 
             showSuccess("Factura creada exitosamente\nNúmero: " + invoice.getInvoiceNumber() + 
                        "\nTotal: $" + String.format("%.2f", total));
-            System.out.println("✅ Factura creada exitosamente: " + invoice.getInvoiceNumber());
+            System.out.println("Factura creada exitosamente: " + invoice.getInvoiceNumber());
             view.dispose();
 
         } catch (Exception ex) {
             showError("Error al crear la factura: " + ex.getMessage());
-            System.err.println("❌ Error en createNewInvoice: " + ex.getMessage());
+            System.err.println("Error en createNewInvoice: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -300,12 +299,12 @@ public class InvoiceFormController {
 
             showSuccess("Factura actualizada exitosamente\nNúmero: " + invoice.getInvoiceNumber() + 
                        "\nTotal: $" + String.format("%.2f", total));
-            System.out.println("✅ Factura actualizada: " + invoice.getInvoiceNumber());
+            System.out.println("Factura actualizada: " + invoice.getInvoiceNumber());
             view.dispose();
 
         } catch (Exception ex) {
             showError("Error al actualizar la factura: " + ex.getMessage());
-            System.err.println("❌ Error en updateExistingInvoice: " + ex.getMessage());
+            System.err.println("Error en updateExistingInvoice: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -348,15 +347,15 @@ public class InvoiceFormController {
      * Mostrar mensaje de error
      */
     private void showError(String message) {
-        JOptionPane.showMessageDialog(view, message, "❌ Error", JOptionPane.ERROR_MESSAGE);
-        System.err.println("⚠️ " + message);
+        JOptionPane.showMessageDialog(view, message, "Error", JOptionPane.ERROR_MESSAGE);
+        System.err.println(message);
     }
 
     /**
      * Mostrar mensaje de éxito
      */
     private void showSuccess(String message) {
-        JOptionPane.showMessageDialog(view, message, "✅ Éxito", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(view, message, "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**

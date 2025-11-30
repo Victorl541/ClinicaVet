@@ -2,7 +2,6 @@ package com.clinicavet.model.repositories;
 
 import com.clinicavet.model.entities.Payment;
 import com.clinicavet.util.JsonHelper;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -89,9 +88,9 @@ public class PaymentRepository implements IPaymentRepository {
             
             sb.append("]\n");
             JsonHelper.writeJsonFile(FILE_NAME, sb.toString());
-            System.out.println("✅ Pagos guardados: " + payments.size());
+            System.out.println("Pagos guardados: " + payments.size());
         } catch (Exception ex) {
-            System.err.println("❌ Error al guardar pagos: " + ex.getMessage());
+            System.err.println("Error al guardar pagos: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -121,7 +120,7 @@ public class PaymentRepository implements IPaymentRepository {
             }
             
             String[] paymentStrings = splitByObject(content);
-            System.out.println("📖 Cargando " + paymentStrings.length + " pagos...");
+            System.out.println("Cargando " + paymentStrings.length + " pagos...");
             
             for (String paymentStr : paymentStrings) {
                 try {
@@ -130,13 +129,13 @@ public class PaymentRepository implements IPaymentRepository {
                         payments.add(payment);
                     }
                 } catch (Exception ex) {
-                    System.err.println("⚠️ Error parsing payment: " + ex.getMessage());
+                    System.err.println("Error parsing payment: " + ex.getMessage());
                 }
             }
             
-            System.out.println("✅ Pagos cargados: " + payments.size());
+            System.out.println("Pagos cargados: " + payments.size());
         } catch (Exception ex) {
-            System.err.println("❌ Error al cargar pagos: " + ex.getMessage());
+            System.err.println("Error al cargar pagos: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -146,7 +145,7 @@ public class PaymentRepository implements IPaymentRepository {
             UUID id = UUID.fromString(extractString(jsonStr, "id"));
             String invoiceIdStr = extractString(jsonStr, "invoiceId");
             UUID invoiceId = UUID.fromString(invoiceIdStr);
-            double amount = Double.parseDouble(extractString(jsonStr, "amount"));
+            double amount = Double.parseDouble(extractValue(jsonStr, "amount"));
             String methodStr = extractString(jsonStr, "paymentMethod");
             Payment.PaymentMethod paymentMethod = Payment.PaymentMethod.valueOf(methodStr);
             String paymentDateStr = extractString(jsonStr, "paymentDate");
@@ -165,10 +164,34 @@ public class PaymentRepository implements IPaymentRepository {
             
             return payment;
         } catch (Exception ex) {
-            System.err.println("❌ Error parsing payment JSON: " + ex.getMessage());
+            System.err.println("Error parsing payment JSON: " + ex.getMessage());
             ex.printStackTrace();
             return null;
         }
+    }
+    
+    private String extractValue(String json, String key) {
+        String searchKey = "\"" + key + "\":";
+        int keyIndex = json.indexOf(searchKey);
+        if (keyIndex == -1) return "";
+        
+        int startIndex = keyIndex + searchKey.length();
+        // Saltar espacios
+        while (startIndex < json.length() && Character.isWhitespace(json.charAt(startIndex))) {
+            startIndex++;
+        }
+        
+        // Encontrar el final del valor (coma o cierre de objeto)
+        int endIndex = startIndex;
+        while (endIndex < json.length()) {
+            char c = json.charAt(endIndex);
+            if (c == ',' || c == '}' || c == '\n' || c == '\r') {
+                break;
+            }
+            endIndex++;
+        }
+        
+        return json.substring(startIndex, endIndex).trim();
     }
     
     private String extractString(String json, String key) {

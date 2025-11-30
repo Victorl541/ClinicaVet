@@ -1,11 +1,10 @@
 package com.clinicavet.views;
 
 import com.clinicavet.model.entities.Appointment;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Vista de Atención Médica: muestra las citas del médico para atender
@@ -30,7 +29,7 @@ public class MedicalRecordsListView extends JPanel {
         setBackground(Color.WHITE);
         
         // --- TÍTULO ---
-        JLabel lblTitle = new JLabel("🩺 Atención Médica - Mis Citas", SwingConstants.CENTER);
+        JLabel lblTitle = new JLabel("Atención Médica - Mis Citas", SwingConstants.CENTER);
         lblTitle.setFont(new Font("SansSerif", Font.BOLD, 18));
         lblTitle.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         add(lblTitle, BorderLayout.NORTH);
@@ -62,12 +61,12 @@ public class MedicalRecordsListView extends JPanel {
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         bottomPanel.setBackground(Color.WHITE);
         
-        btnAttend = new JButton("✅ Atender Cita");
+        btnAttend = new JButton("Atender Cita");
         btnAttend.setBackground(new Color(46, 204, 113));
         btnAttend.setForeground(Color.WHITE);
         btnAttend.setFocusPainted(false);
         
-        btnNoAttended = new JButton("❌ No Asistió");
+        btnNoAttended = new JButton("No Asistió");
         btnNoAttended.setBackground(new Color(231, 76, 60));
         btnNoAttended.setForeground(Color.WHITE);
         btnNoAttended.setFocusPainted(false);
@@ -77,7 +76,7 @@ public class MedicalRecordsListView extends JPanel {
         btnReschedule.setForeground(Color.WHITE);
         btnReschedule.setFocusPainted(false);
         
-        btnViewHistory = new JButton("📋 Ver Historia Clínica");
+        btnViewHistory = new JButton("Ver Historia Clínica");
         btnViewHistory.setBackground(new Color(52, 152, 219));
         btnViewHistory.setForeground(Color.WHITE);
         btnViewHistory.setFocusPainted(false);

@@ -18,15 +18,15 @@ public class PaymentRegistrationDialogController {
         this.invoice = invoice;
         this.paymentsViewController = paymentsViewController;
         
-        System.out.println("💳 [PaymentRegistrationDialogController] Inicializando...");
+        System.out.println("[PaymentRegistrationDialogController] Inicializando...");
         
         setupListeners();
         
-        System.out.println("✅ [PaymentRegistrationDialogController] Inicializado");
+        System.out.println("[PaymentRegistrationDialogController] Inicializado");
     }
     
     private void setupListeners() {
-        System.out.println("🔧 Configurando listeners...");
+        System.out.println("Configurando listeners...");
         
         // Botón procesar pago
         view.getBtnProcess().addActionListener(e -> processPayment());
@@ -37,7 +37,7 @@ public class PaymentRegistrationDialogController {
      * Procesar el pago
      */
     private void processPayment() {
-        System.out.println("💳 Procesando pago...");
+        System.out.println("Procesando pago...");
         
         try {
             String amountStr = view.getAmount();
@@ -65,7 +65,7 @@ public class PaymentRegistrationDialogController {
         } catch (NumberFormatException e) {
             view.showError("Monto inválido");
         } catch (Exception e) {
-            System.err.println("❌ Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
             view.showError("Error: " + e.getMessage());
         }
     }

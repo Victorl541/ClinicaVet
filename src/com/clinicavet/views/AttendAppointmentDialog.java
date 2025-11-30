@@ -1,9 +1,8 @@
 package com.clinicavet.views;
 
 import com.clinicavet.model.entities.Appointment;
-
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 /**
  * Diálogo para atender una cita y registrar la atención médica
@@ -44,7 +43,7 @@ public class AttendAppointmentDialog extends JDialog {
         
         // Título
         gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
-        JLabel lblTitle = new JLabel("📋 REGISTRO DE ATENCIÓN MÉDICA", SwingConstants.CENTER);
+        JLabel lblTitle = new JLabel("REGISTRO DE ATENCIÓN MÉDICA", SwingConstants.CENTER);
         lblTitle.setFont(new Font("SansSerif", Font.BOLD, 16));
         mainPanel.add(lblTitle, gbc);
         row++;
@@ -163,11 +162,11 @@ public class AttendAppointmentDialog extends JDialog {
         gbc.weighty = 0; gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
         JPanel buttonPanel = new JPanel(new FlowLayout());
-        btnSave = new JButton("💾 Guardar y Cerrar Cita");
+        btnSave = new JButton("Guardar y Cerrar Cita");
         btnSave.setBackground(new Color(46, 204, 113));
         btnSave.setForeground(Color.WHITE);
         btnSave.setFocusPainted(false);
-        btnCancel = new JButton("❌ Cancelar");
+        btnCancel = new JButton("Cancelar");
         buttonPanel.add(btnSave);
         buttonPanel.add(btnCancel);
         mainPanel.add(buttonPanel, gbc);

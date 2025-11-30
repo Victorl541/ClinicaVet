@@ -4,15 +4,14 @@ import com.clinicavet.model.entities.Invoice;
 import com.clinicavet.model.services.IInvoiceService;
 import com.clinicavet.model.services.IOwnerService;
 import com.clinicavet.model.services.IPaymentService;
-import com.clinicavet.views.InvoicesListView;
-import com.clinicavet.views.InvoiceSearchDialog;
 import com.clinicavet.views.InvoiceFormDialog;
-
-import javax.swing.*;
+import com.clinicavet.views.InvoiceSearchDialog;
+import com.clinicavet.views.InvoicesListView;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.swing.*;
 
 public class InvoicesController {
 
@@ -32,12 +31,12 @@ public class InvoicesController {
         this.ownerService = ownerService;
         this.paymentService = paymentService;
 
-        System.out.println("📋 [InvoicesController] Inicializando...");
+        System.out.println("[InvoicesController] Inicializando...");
         
         loadAllInvoices();
         setupListeners();
 
-        System.out.println("✅ [InvoicesController] Inicializado correctamente");
+        System.out.println("[InvoicesController] Inicializado correctamente");
     }
 
     private void setupListeners() {
@@ -55,10 +54,10 @@ public class InvoicesController {
      * Cargar todas las facturas desde el servicio
      */
     public void loadAllInvoices() {
-        System.out.println("📖 [InvoicesController] Cargando todas las facturas...");
+        System.out.println("[InvoicesController] Cargando todas las facturas...");
         
         allInvoices = invoiceService.listInvoices();
-        System.out.println("📊 Total de facturas en memoria: " + allInvoices.size());
+        System.out.println("Total de facturas en memoria: " + allInvoices.size());
         
         view.setTableData(allInvoices);
         System.out.println("✓ Tabla actualizada con " + allInvoices.size() + " facturas");
@@ -93,7 +92,7 @@ public class InvoicesController {
             System.out.println("   Dialog visible: ✓ OK");
 
         } catch (Exception ex) {
-            System.err.println("❌ ERROR al abrir búsqueda: " + ex.getMessage());
+            System.err.println("ERROR al abrir búsqueda: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -118,7 +117,7 @@ public class InvoicesController {
             loadAllInvoices();
 
         } catch (Exception e) {
-            System.err.println("❌ ERROR al abrir nueva factura: " + e.getMessage());
+            System.err.println("ERROR al abrir nueva factura: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -131,7 +130,7 @@ public class InvoicesController {
 
         if (selectedRow < 0) {
             JOptionPane.showMessageDialog(view, "Selecciona una factura para anular", "Info", JOptionPane.INFORMATION_MESSAGE);
-            System.out.println("⚠️ No hay factura seleccionada para anular");
+            System.out.println("No hay factura seleccionada para anular");
             return;
         }
 
@@ -140,7 +139,7 @@ public class InvoicesController {
 
         if (invoice.isEmpty()) {
             JOptionPane.showMessageDialog(view, "Factura no encontrada", "Error", JOptionPane.ERROR_MESSAGE);
-            System.err.println("❌ Factura no encontrada: " + invoiceNumber);
+            System.err.println("Factura no encontrada: " + invoiceNumber);
             return;
         }
 
@@ -175,14 +174,14 @@ public class InvoicesController {
                 System.out.println("   ✓ Factura guardada en archivo JSON");
                 
                 JOptionPane.showMessageDialog(view, "Factura anulada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                System.out.println("✅ Factura anulada exitosamente: " + invoiceNumber);
+                System.out.println("Factura anulada exitosamente: " + invoiceNumber);
                 
                 System.out.println("🔄 Recargando facturas después de anular");
                 loadAllInvoices();
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(view, "Error al anular la factura: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                System.err.println("❌ Error al anular factura: " + ex.getMessage());
+                System.err.println("Error al anular factura: " + ex.getMessage());
                 ex.printStackTrace();
             }
         } else {

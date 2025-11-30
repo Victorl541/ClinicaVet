@@ -2,24 +2,24 @@ package com.clinicavet.controllers;
 
 import com.clinicavet.model.entities.User;
 import com.clinicavet.model.services.IAppointmentService;
+import com.clinicavet.model.services.IInvoiceService;
 import com.clinicavet.model.services.IMedicalRecordService;
 import com.clinicavet.model.services.IOwnerService;
-import com.clinicavet.model.services.IPetService;
-import com.clinicavet.model.services.IUserService;
-import com.clinicavet.model.services.IInvoiceService;
 import com.clinicavet.model.services.IPaymentService;
+import com.clinicavet.model.services.IPetService;
+import com.clinicavet.model.services.IReportService;
+import com.clinicavet.model.services.IUserService;
 import com.clinicavet.model.services.RolService;
 import com.clinicavet.views.AppointmentsListView;
 import com.clinicavet.views.HomeView;
+import com.clinicavet.views.InvoicesListView;
 import com.clinicavet.views.MainWindow;
 import com.clinicavet.views.MedicalRecordsListView;
 import com.clinicavet.views.OwnersListView;
-import com.clinicavet.views.PetsListView;
-import com.clinicavet.views.UsersListView;
-import com.clinicavet.views.InvoicesListView;
 import com.clinicavet.views.PaymentsView;
-
-import javax.swing.*;
+import com.clinicavet.views.PetsListView;
+import com.clinicavet.views.ReportsView;
+import com.clinicavet.views.UsersListView;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,6 +34,7 @@ public class MainController {
     private final IMedicalRecordService medicalRecordService;
     private final IInvoiceService invoiceService;
     private final IPaymentService paymentService;
+    private final IReportService reportService;
 
     private MainWindow mainWindow;
     private User currentUser;
@@ -42,7 +43,7 @@ public class MainController {
     public MainController(IUserService userService, RolService rolService, IOwnerService ownerService, 
                          IPetService petService, IAppointmentService appointmentService,
                          IMedicalRecordService medicalRecordService, IInvoiceService invoiceService,
-                         IPaymentService paymentService) {
+                         IPaymentService paymentService, IReportService reportService) {
         this.userService = userService;
         this.rolService = rolService;
         this.ownerService = ownerService;
@@ -51,6 +52,7 @@ public class MainController {
         this.medicalRecordService = medicalRecordService;
         this.invoiceService = invoiceService;
         this.paymentService = paymentService;
+        this.reportService = reportService;
     }
 
     public void setMainWindow(MainWindow mainWindow) {
@@ -174,7 +176,7 @@ public class MainController {
     // ========================
 
     public void openInvoices() {
-        System.out.println("📋 [MainController] Abriendo Facturas...");
+        System.out.println("[MainController] Abriendo Facturas...");
         
         // Validar que el usuario sea AUXILIAR
         if (!isUserRoleAuxiliar()) {
@@ -185,7 +187,7 @@ public class MainController {
         new InvoicesController(view, invoiceService, ownerService, paymentService);
         mainWindow.showView("invoices", view);
         
-        System.out.println("✅ Facturas abierto");
+        System.out.println("Facturas abierto");
     }
 
     // ========================
@@ -193,19 +195,19 @@ public class MainController {
     // ========================
 
     public void openPaymentsTab() {
-        System.out.println("💰 [MainController] Abriendo Pagos...");
+        System.out.println("[MainController] Abriendo Pagos...");
         
         // Validar que el usuario sea AUXILIAR
         if (!isUserRoleAuxiliar()) {
             throw new SecurityException("Acceso denegado: Solo AUXILIAR puede acceder a Pagos");
         }
 
-        // ✅ USAR PaymentsView CON PaymentsViewController
+        // USAR PaymentsView CON PaymentsViewController
         PaymentsView view = new PaymentsView();
         new PaymentsViewController(view, paymentService, invoiceService);
         mainWindow.showView("payments", view);
         
-        System.out.println("✅ Tab de Pagos abierto");
+        System.out.println("Tab de Pagos abierto");
     }
 
     // ========================
@@ -254,14 +256,14 @@ public class MainController {
 
     private boolean isUserRoleAuxiliar() {
         if (currentUser == null) {
-            System.err.println("⚠️ Usuario actual es null");
+            System.err.println("Usuario actual es null");
             return false;
         }
         
         boolean isAuxiliar = currentUser.getRol() != null && 
                currentUser.getRol().getName().equalsIgnoreCase("AUXILIAR");
         
-        System.out.println("🔐 Validación de rol AUXILIAR: " + isAuxiliar);
+        System.out.println("Validación de rol AUXILIAR: " + isAuxiliar);
         return isAuxiliar;
     }
 
@@ -294,6 +296,16 @@ public class MainController {
     }
 
     // ========================
+    // REPORTS (Solo ADMIN)
+    // ========================
+
+    public void openReports() {
+        ReportsView view = new ReportsView();
+        new ReportsController(view, reportService);
+        mainWindow.showView("reports", view);
+    }
+
+    // ========================
     // LOGOUT
     // ========================
 
@@ -306,6 +318,6 @@ public class MainController {
         }
         currentUser = null;
         
-        System.out.println("✅ Sesión cerrada");
+        System.out.println("Sesión cerrada");
     }
 }

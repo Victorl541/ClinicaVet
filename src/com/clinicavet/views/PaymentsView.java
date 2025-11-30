@@ -1,8 +1,8 @@
 package com.clinicavet.views;
 
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 
 public class PaymentsView extends JPanel {
     
@@ -24,7 +24,7 @@ public class PaymentsView extends JPanel {
         topPanel.setBackground(Color.WHITE);
         topPanel.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
         
-        JLabel lblTitle = new JLabel("💰 Registro de Pagos - Facturas Pendientes");
+        JLabel lblTitle = new JLabel("Registro de Pagos - Facturas Pendientes");
         lblTitle.setFont(new Font("Arial", Font.BOLD, 16));
         topPanel.add(lblTitle);
         
@@ -37,7 +37,7 @@ public class PaymentsView extends JPanel {
         btnSearch.setFocusPainted(false);
         topPanel.add(btnSearch);
         
-        btnPayInvoice = new JButton("💳 Registrar Pago");
+        btnPayInvoice = new JButton("Registrar Pago");
         btnPayInvoice.setPreferredSize(new Dimension(150, 35));
         btnPayInvoice.setBackground(new Color(46, 204, 113));
         btnPayInvoice.setForeground(Color.WHITE);

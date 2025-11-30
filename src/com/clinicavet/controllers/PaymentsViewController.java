@@ -4,17 +4,16 @@ import com.clinicavet.model.entities.Invoice;
 import com.clinicavet.model.entities.Payment;
 import com.clinicavet.model.services.IInvoiceService;
 import com.clinicavet.model.services.IPaymentService;
-import com.clinicavet.views.PaymentsView;
-import com.clinicavet.views.PaymentsSearchDialog;
 import com.clinicavet.views.PaymentRegistrationDialog;
-
-import javax.swing.*;
+import com.clinicavet.views.PaymentsSearchDialog;
+import com.clinicavet.views.PaymentsView;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.swing.*;
 
 public class PaymentsViewController {
     
@@ -30,16 +29,16 @@ public class PaymentsViewController {
         this.invoiceService = invoiceService;
         this.allInvoices = invoiceService.listInvoices();
         
-        System.out.println("💳 [PaymentsViewController] Inicializando...");
+        System.out.println("[PaymentsViewController] Inicializando...");
         
         setupListeners();
         loadDefaultData();
         
-        System.out.println("✅ [PaymentsViewController] Inicializado");
+        System.out.println("[PaymentsViewController] Inicializado");
     }
     
     private void setupListeners() {
-        System.out.println("🔧 Configurando listeners...");
+        System.out.println("Configurando listeners...");
         
         // Botón búsqueda
         view.btnSearch.addActionListener(e -> openSearchDialog());
@@ -54,7 +53,7 @@ public class PaymentsViewController {
      * Cargar datos por defecto (SOLO PENDIENTE)
      */
     private void loadDefaultData() {
-        System.out.println("📖 Cargando datos por defecto...");
+        System.out.println("Cargando datos por defecto...");
         
         List<Invoice> pendingInvoices = allInvoices.stream()
                 .filter(inv -> inv.getStatus() == Invoice.InvoiceStatus.PENDIENTE)
@@ -93,7 +92,7 @@ public class PaymentsViewController {
      * Abrir diálogo de pago
      */
     private void openPaymentDialog() {
-        System.out.println("💳 Abriendo diálogo de pago...");
+        System.out.println("Abriendo diálogo de pago...");
         
         int selectedRow = view.getSelectedRow();
         
@@ -139,7 +138,7 @@ public class PaymentsViewController {
             dialog.setVisible(true);
             
         } catch (Exception ex) {
-            System.err.println("❌ Error: " + ex.getMessage());
+            System.err.println("Error: " + ex.getMessage());
             view.showError("Error: " + ex.getMessage());
         }
     }
@@ -148,7 +147,7 @@ public class PaymentsViewController {
      * Procesar el pago (llamado desde PaymentRegistrationDialogController)
      */
     public void processPayment(Invoice invoice, double amount, String paymentMethod, String reference) {
-        System.out.println("💳 Procesando pago...");
+        System.out.println("Procesando pago...");
         
         try {
             if (amount <= 0) {
@@ -182,7 +181,7 @@ public class PaymentsViewController {
                 paymentService.savePayments();
                 System.out.println("   ✓ Pago guardado");
                 
-                // ✅ ACTUALIZAR ESTADO DE FACTURA AUTOMÁTICAMENTE
+                // ACTUALIZAR ESTADO DE FACTURA AUTOMÁTICAMENTE
                 double newTotalPaid = paymentService.getTotalPaidByInvoice(invoice.getId());
                 invoice.setTotalPaid(newTotalPaid);
                 
@@ -209,7 +208,7 @@ public class PaymentsViewController {
             }
             
         } catch (Exception e) {
-            System.err.println("❌ Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
             JOptionPane.showMessageDialog(view, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

@@ -1,2 +1,47 @@
 [
+  {
+    "id": "770e8400-e29b-41d4-a716-446655440001",
+    "invoiceId": "550e8400-e29b-41d4-a716-446655440004",
+    "amount": 492660.0,
+    "paymentMethod": "EFECTIVO",
+    "paymentDate": "2025-11-28T14:30:00",
+    "reference": "PAGO-001",
+    "notes": "Pago completo de esterilización quirúrgica"
+  },
+  {
+    "id": "770e8400-e29b-41d4-a716-446655440002",
+    "invoiceId": "550e8400-e29b-41d4-a716-446655440006",
+    "amount": 155890.0,
+    "paymentMethod": "TARJETA",
+    "paymentDate": "2025-11-30T10:15:00",
+    "reference": "PAGO-002",
+    "notes": "Pago examen oftalmológico"
+  },
+  {
+    "id": "770e8400-e29b-41d4-a716-446655440003",
+    "invoiceId": "2733d33e-859c-459c-ae3c-2166b6990de6",
+    "amount": 35700.0,
+    "paymentMethod": "EFECTIVO",
+    "paymentDate": "2025-11-30T12:45:00",
+    "reference": "PAGO-003",
+    "notes": "Pago vacuna antirrábica"
+  },
+  {
+    "id": "97210a02-2aeb-45d0-b6f6-9b0fdc0a5740",
+    "invoiceId": "550e8400-e29b-41d4-a716-446655440003",
+    "amount": 197540.0,
+    "paymentMethod": "EFECTIVO",
+    "paymentDate": "2025-11-30T12:35:29.98322",
+    "reference": "Pago",
+    "notes": ""
+  },
+  {
+    "id": "cce5a916-20a2-427d-8a99-f7011f241267",
+    "invoiceId": "550e8400-e29b-41d4-a716-446655440005",
+    "amount": 261800.0,
+    "paymentMethod": "EFECTIVO",
+    "paymentDate": "2025-11-30T12:36:18.5677581",
+    "reference": "TOTAL",
+    "notes": ""
+  }
 ]

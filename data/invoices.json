@@ -24,7 +24,8 @@
     "status": "ANULADA",
     "subtotal": 85000.0,
     "tax": 16150.0,
-    "total": 101150.0
+    "total": 101150.0,
+    "totalPaid": 0.0
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440002",
@@ -55,10 +56,11 @@
       }
     ],
     "notes": "Procedimiento exitoso sin complicaciones - María Rodríguez",
-    "status": "PENDIENTE",
+    "status": "PARCIAL",
     "subtotal": 160000.0,
     "tax": 30400.0,
-    "total": 190400.0
+    "total": 190400.0,
+    "totalPaid": 0.0
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440003",
@@ -82,10 +84,11 @@
       }
     ],
     "notes": "Diagnóstico: Gastritis leve, seguimiento en 1 semana - Pedro Gómez",
-    "status": "PENDIENTE",
+    "status": "PAGADA",
     "subtotal": 166000.0,
     "tax": 31540.0,
-    "total": 197540.0
+    "total": 197540.0,
+    "totalPaid": 197540.0
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440004",
@@ -119,7 +122,8 @@
     "status": "PAGADA",
     "subtotal": 414000.0,
     "tax": 78660.0,
-    "total": 492660.0
+    "total": 492660.0,
+    "totalPaid": 0.0
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440005",
@@ -143,10 +147,11 @@
       }
     ],
     "notes": "Tratamiento para infección respiratoria, 14 días de antibiótico - Carlos Sánchez",
-    "status": "PENDIENTE",
+    "status": "PAGADA",
     "subtotal": 220000.0,
     "tax": 41800.0,
-    "total": 261800.0
+    "total": 261800.0,
+    "totalPaid": 261800.0
   },
   {
     "id": "550e8400-e29b-41d4-a716-446655440006",
@@ -173,7 +178,8 @@
     "status": "PAGADA",
     "subtotal": 131000.0,
     "tax": 24890.0,
-    "total": 155890.0
+    "total": 155890.0,
+    "totalPaid": 0.0
   },
   {
     "id": "2733d33e-859c-459c-ae3c-2166b6990de6",
@@ -193,6 +199,7 @@
     "status": "PAGADA",
     "subtotal": 30000.0,
     "tax": 5700.0,
-    "total": 35700.0
+    "total": 35700.0,
+    "totalPaid": 0.0
   }
 ]

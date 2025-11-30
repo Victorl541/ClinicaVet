@@ -19,35 +19,37 @@ import com.clinicavet.model.services.IMedicalRecordService;
 import com.clinicavet.model.services.IOwnerService;
 import com.clinicavet.model.services.IPaymentService;
 import com.clinicavet.model.services.IPetService;
+import com.clinicavet.model.services.IReportService;
 import com.clinicavet.model.services.IUserService;
 import com.clinicavet.model.services.InvoiceService;
 import com.clinicavet.model.services.MedicalRecordService;
 import com.clinicavet.model.services.OwnerService;
 import com.clinicavet.model.services.PaymentService;
 import com.clinicavet.model.services.PetService;
+import com.clinicavet.model.services.ReportService;
 import com.clinicavet.model.services.RolService;
 import com.clinicavet.model.services.UserService;
+import com.clinicavet.util.ThemeManager;
 import com.clinicavet.views.Login;
-
-import javax.swing.*;
 import java.io.File;
+import javax.swing.*;
 
 public class App {
 
     private static MainController mainController;
 
     public static void main(String[] args) {
-        System.out.println("🚀 Iniciando Clínica Veterinaria...\n");
+        System.out.println("Iniciando Clínica Veterinaria...\n");
         
         // Crear directorio data/ si no existe
         File dataDir = new File("data");
         if (!dataDir.exists()) {
             dataDir.mkdir();
-            System.out.println("📁 Directorio 'data' creado");
+            System.out.println("Directorio 'data' creado");
         }
 
         // --- REPOSITORIOS ---
-        System.out.println("📚 Inicializando repositorios...");
+        System.out.println("Inicializando repositorios...");
         RolRepository rolRepo = new RolRepository();
         UserRepository userRepo = new UserRepository();
         OwnerRepository ownerRepo = new OwnerRepository();
@@ -69,7 +71,7 @@ public class App {
         paymentRepo.setInvoiceRepository(invoiceRepo);
 
         // Cargar datos desde archivos JSON
-        System.out.println("📖 Cargando datos desde JSON...");
+        System.out.println("Cargando datos desde JSON...");
         rolRepo.load();
         userRepo.load();
         ownerRepo.load();
@@ -81,7 +83,7 @@ public class App {
         System.out.println();
 
         // --- SERVICIOS ---
-        System.out.println("⚙️ Inicializando servicios...");
+        System.out.println("Inicializando servicios...");
         RolService rolService = new RolService(rolRepo);
         IUserService userService = new UserService(userRepo, rolService);
         IOwnerService ownerService = new OwnerService(ownerRepo);
@@ -90,10 +92,11 @@ public class App {
         IMedicalRecordService medicalRecordService = new MedicalRecordService(medicalRecordRepo);
         IInvoiceService invoiceService = new InvoiceService(invoiceRepo, paymentRepo);
         IPaymentService paymentService = new PaymentService(paymentRepo, invoiceRepo);
+        IReportService reportService = new ReportService(appointmentRepo, medicalRecordRepo, invoiceRepo, paymentRepo);
 
         // Crear roles y usuario admin solo si no existen
         if (rolService.listRoles().isEmpty()) {
-            System.out.println("⚠️ Roles no encontrados. Creando roles iniciales...");
+            System.out.println("Roles no encontrados. Creando roles iniciales...");
             
             Rol adminRol = new Rol(1, "ADMIN");
             Rol medicoRol = new Rol(2, "MEDICO");
@@ -104,16 +107,16 @@ public class App {
             rolService.createRol(auxiliarRol);
             rolRepo.save();
 
-            System.out.println("⚠️ Usuario admin no encontrado. Creando usuario inicial...");
+            System.out.println("Usuario admin no encontrado. Creando usuario inicial...");
             User adminUser = new User("admin", "admin@clinic.com", "1234", adminRol);
             userService.createUser(adminUser);
             userRepo.save();
             
-            System.out.println("✅ Roles y usuario admin creados\n");
+            System.out.println("Roles y usuario admin creados\n");
         }
 
         // --- CONTROLLERS ---
-        System.out.println("🎮 Inicializando controladores...");
+        System.out.println("Inicializando controladores...");
         mainController = new MainController(
                 userService,
                 rolService,
@@ -122,14 +125,15 @@ public class App {
                 appointmentService,
                 medicalRecordService,
                 invoiceService,
-                paymentService
+                paymentService,
+                reportService
         );
         
         LoginController loginController = new LoginController(userService, rolService, mainController);
 
         // Agregar shutdown hook para guardar datos al cerrar
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("\n💾 Guardando datos antes de salir...");
+            System.out.println("\nGuardando datos antes de salir...");
             try {
                 rolRepo.save();
                 userRepo.save();
@@ -147,88 +151,15 @@ public class App {
         }));
 
         // --- MOSTRAR LOGIN EN EDT ---
-        System.out.println("🖼️  Abriendo interfaz gráfica...\n");
+        System.out.println("Abriendo interfaz gráfica...\n");
         SwingUtilities.invokeLater(() -> {
-            try {
-                // ✅ MEJOR SOPORTE PARA LINUX
-                String os = System.getProperty("os.name").toLowerCase();
-                
-                if (os.contains("linux")) {
-                    System.out.println("🐧 Detectado Linux - Aplicando tema optimizado");
-                    // Para Linux, usar Metal con tema personalizado
-                    UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-                    
-                    // Configurar tema personalizado para mejor visibilidad
-                    configureLinuxTheme();
-                } else if (os.contains("win")) {
-                    System.out.println("🪟 Detectado Windows - Aplicando tema Windows");
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } else if (os.contains("mac")) {
-                    System.out.println("🍎 Detectado macOS - Aplicando tema Aqua");
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                }
-            } catch (Exception ex) {
-                System.out.println("⚠️ Error cargando tema, usando por defecto...");
-                try {
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (Exception e) {
-                    System.err.println("Error: " + e.getMessage());
-                }
-            }
+            // Aplicar tema responsivo multiplataforma
+            ThemeManager.applyTheme();
+            ThemeManager.applyResponsiveScale();
 
             Login loginView = new Login(loginController);
             loginView.setVisible(true);
         });
-    }
-
-    /**
-     * ✅ Configurar tema personalizado para Linux
-     */
-    private static void configureLinuxTheme() {
-        // Colores claros y visibles en Linux
-        UIManager.put("control", new java.awt.Color(240, 240, 240));
-        UIManager.put("info", new java.awt.Color(240, 240, 240));
-        UIManager.put("nimbusBase", new java.awt.Color(240, 240, 240));
-        UIManager.put("nimbusAlertYellow", new java.awt.Color(138, 138, 0));
-        UIManager.put("nimbusBorder", new java.awt.Color(150, 150, 150));
-        UIManager.put("nimbusDisabledText", new java.awt.Color(100, 100, 100));
-        UIManager.put("nimbusFocus", new java.awt.Color(52, 152, 219));
-        UIManager.put("nimbusGreen", new java.awt.Color(50, 200, 50));
-        UIManager.put("nimbusInfoBlue", new java.awt.Color(52, 152, 219));
-        UIManager.put("nimbusLightBackground", new java.awt.Color(250, 250, 250));
-        UIManager.put("nimbusPrimary", new java.awt.Color(52, 152, 219));
-        UIManager.put("nimbusRed", new java.awt.Color(255, 100, 100));
-        UIManager.put("nimbusSelectedText", java.awt.Color.WHITE);
-        UIManager.put("nimbusSelectionBackground", new java.awt.Color(52, 152, 219));
-        UIManager.put("text", new java.awt.Color(0, 0, 0));
-        UIManager.put("textBackground", java.awt.Color.WHITE);
-        UIManager.put("textForeground", new java.awt.Color(0, 0, 0));
-        UIManager.put("textHighlight", new java.awt.Color(52, 152, 219));
-        UIManager.put("textHighlightText", java.awt.Color.WHITE);
-        UIManager.put("textInactiveText", new java.awt.Color(100, 100, 100));
-        
-        // Fuentes
-        java.awt.Font defaultFont = new java.awt.Font("DejaVu Sans", java.awt.Font.PLAIN, 12);
-        UIManager.put("Label.font", defaultFont);
-        UIManager.put("Button.font", defaultFont);
-        UIManager.put("TextField.font", defaultFont);
-        UIManager.put("TextArea.font", defaultFont);
-        UIManager.put("ComboBox.font", defaultFont);
-        UIManager.put("Menu.font", new java.awt.Font("DejaVu Sans", java.awt.Font.BOLD, 12));
-        UIManager.put("MenuItem.font", new java.awt.Font("DejaVu Sans", java.awt.Font.PLAIN, 11));
-        
-        // Menús visibles
-        UIManager.put("Menu.background", new java.awt.Color(52, 152, 219));
-        UIManager.put("Menu.foreground", java.awt.Color.WHITE);
-        UIManager.put("MenuItem.background", java.awt.Color.WHITE);
-        UIManager.put("MenuItem.foreground", new java.awt.Color(0, 0, 0));
-        UIManager.put("MenuItem.selectionBackground", new java.awt.Color(52, 152, 219));
-        UIManager.put("MenuItem.selectionForeground", java.awt.Color.WHITE);
-        UIManager.put("PopupMenu.background", java.awt.Color.WHITE);
-        UIManager.put("PopupMenu.foreground", new java.awt.Color(0, 0, 0));
-        UIManager.put("PopupMenu.border", BorderFactory.createLineBorder(new java.awt.Color(150, 150, 150), 1));
-        
-        System.out.println("✅ Tema Linux configurado");
     }
 
     public static MainController getMainController() {

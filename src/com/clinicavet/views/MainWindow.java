@@ -3,13 +3,12 @@ package com.clinicavet.views;
 import com.clinicavet.App;
 import com.clinicavet.controllers.MainController;
 import com.clinicavet.model.entities.User;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.*;
 
 public class MainWindow extends JFrame {
 
@@ -43,7 +42,7 @@ public class MainWindow extends JFrame {
         menuBar.setForeground(Color.WHITE);
         setJMenuBar(menuBar);
         
-        // ✅ Aplicar Look and Feel personalizado a los menús
+        // Aplicar Look and Feel personalizado a los menús
         configureMenuLookAndFeel();
 
         // --- PANEL SUPERIOR ---
@@ -61,7 +60,7 @@ public class MainWindow extends JFrame {
     }
     
     /**
-     * ✅ Configurar estilo consistente de menús
+     * Configurar estilo consistente de menús
      */
     private void configureMenuLookAndFeel() {
         // Colores explícitos para máxima visibilidad
@@ -111,7 +110,7 @@ public class MainWindow extends JFrame {
         UIManager.put("Separator.background", borderColor);
         UIManager.put("Separator.foreground", borderColor);
         
-        System.out.println("✅ Estilos de menú configurados para Linux");
+        System.out.println("Estilos de menú configurados para Linux");
     }
 
     private JPanel createTopPanel() {
@@ -192,7 +191,7 @@ public class MainWindow extends JFrame {
         menu.setForeground(Color.WHITE);
         menu.setFont(new Font("Arial", Font.BOLD, 12));
 
-        JMenuItem itemHome = new JMenuItem("🏠 Home");
+        JMenuItem itemHome = new JMenuItem("Home");
         itemHome.setFont(new Font("Arial", Font.PLAIN, 12));
         itemHome.setBackground(Color.WHITE);
         itemHome.setForeground(new Color(44, 62, 80));
@@ -208,21 +207,21 @@ public class MainWindow extends JFrame {
         menuManagement.setForeground(Color.WHITE);
         menuManagement.setFont(new Font("Arial", Font.BOLD, 12));
 
-        JMenuItem itemUsers = new JMenuItem("👤 Usuarios");
+        JMenuItem itemUsers = new JMenuItem("Usuarios");
         itemUsers.setFont(new Font("Arial", Font.PLAIN, 12));
         itemUsers.setBackground(Color.WHITE);
         itemUsers.setForeground(new Color(44, 62, 80));
         itemUsers.addActionListener(e -> mainController.openUsers());
         menuManagement.add(itemUsers);
 
-        JMenuItem itemOwners = new JMenuItem("👨‍👩‍👧‍👦 Propietarios");
+        JMenuItem itemOwners = new JMenuItem("Propietarios");
         itemOwners.setFont(new Font("Arial", Font.PLAIN, 12));
         itemOwners.setBackground(Color.WHITE);
         itemOwners.setForeground(new Color(44, 62, 80));
         itemOwners.addActionListener(e -> mainController.openOwners());
         menuManagement.add(itemOwners);
 
-        JMenuItem itemPets = new JMenuItem("🐾 Mascotas");
+        JMenuItem itemPets = new JMenuItem("Mascotas");
         itemPets.setFont(new Font("Arial", Font.PLAIN, 12));
         itemPets.setBackground(Color.WHITE);
         itemPets.setForeground(new Color(44, 62, 80));
@@ -236,7 +235,7 @@ public class MainWindow extends JFrame {
         menuClinical.setForeground(Color.WHITE);
         menuClinical.setFont(new Font("Arial", Font.BOLD, 12));
 
-        JMenuItem itemAppointments = new JMenuItem("📅 Citas");
+        JMenuItem itemAppointments = new JMenuItem("Citas");
         itemAppointments.setFont(new Font("Arial", Font.PLAIN, 12));
         itemAppointments.setBackground(Color.WHITE);
         itemAppointments.setForeground(new Color(44, 62, 80));
@@ -244,6 +243,20 @@ public class MainWindow extends JFrame {
         menuClinical.add(itemAppointments);
 
         menuBar.add(menuClinical);
+
+        // --- MENÚ REPORTES (Solo ADMIN) ---
+        JMenu menuReports = new JMenu("Reportes");
+        menuReports.setForeground(Color.WHITE);
+        menuReports.setFont(new Font("Arial", Font.BOLD, 12));
+
+        JMenuItem itemReports = new JMenuItem("Reportes");
+        itemReports.setFont(new Font("Arial", Font.PLAIN, 12));
+        itemReports.setBackground(Color.WHITE);
+        itemReports.setForeground(new Color(44, 62, 80));
+        itemReports.addActionListener(e -> mainController.openReports());
+        menuReports.add(itemReports);
+
+        menuBar.add(menuReports);
     }
 
     private void createMedicoMenu() {
@@ -252,14 +265,14 @@ public class MainWindow extends JFrame {
         menuClinical.setForeground(Color.WHITE);
         menuClinical.setFont(new Font("Arial", Font.BOLD, 12));
 
-        JMenuItem itemAppointments = new JMenuItem("📅 Citas");
+        JMenuItem itemAppointments = new JMenuItem("Citas");
         itemAppointments.setFont(new Font("Arial", Font.PLAIN, 12));
         itemAppointments.setBackground(Color.WHITE);
         itemAppointments.setForeground(new Color(44, 62, 80));
         itemAppointments.addActionListener(e -> mainController.openAppointments());
         menuClinical.add(itemAppointments);
 
-        JMenuItem itemMedicalRecords = new JMenuItem("📋 Registros Médicos");
+        JMenuItem itemMedicalRecords = new JMenuItem("Registros Médicos");
         itemMedicalRecords.setFont(new Font("Arial", Font.PLAIN, 12));
         itemMedicalRecords.setBackground(Color.WHITE);
         itemMedicalRecords.setForeground(new Color(44, 62, 80));
@@ -268,37 +281,51 @@ public class MainWindow extends JFrame {
 
         menuBar.add(menuClinical);
 
-        // --- MENÚ CONSULTA GENERAL ---
-        JMenu menuConsult = new JMenu("Consulta");
-        menuConsult.setForeground(Color.WHITE);
-        menuConsult.setFont(new Font("Arial", Font.BOLD, 12));
+        // --- MENÚ CONSULTA ---
+        JMenu menuConsulta = new JMenu("Consulta");
+        menuConsulta.setForeground(Color.WHITE);
+        menuConsulta.setFont(new Font("Arial", Font.BOLD, 12));
 
-        JMenuItem itemPets = new JMenuItem("🐾 Mascotas");
+        JMenuItem itemPets = new JMenuItem("Mascotas");
         itemPets.setFont(new Font("Arial", Font.PLAIN, 12));
         itemPets.setBackground(Color.WHITE);
         itemPets.setForeground(new Color(44, 62, 80));
         itemPets.addActionListener(e -> mainController.openPets());
-        menuConsult.add(itemPets);
+        menuConsulta.add(itemPets);
 
-        JMenuItem itemOwners = new JMenuItem("👨‍👩‍👧‍👦 Propietarios");
+        JMenuItem itemOwners = new JMenuItem("Propietarios");
         itemOwners.setFont(new Font("Arial", Font.PLAIN, 12));
         itemOwners.setBackground(Color.WHITE);
         itemOwners.setForeground(new Color(44, 62, 80));
         itemOwners.addActionListener(e -> mainController.openOwners());
-        menuConsult.add(itemOwners);
+        menuConsulta.add(itemOwners);
 
-        menuBar.add(menuConsult);
+        menuBar.add(menuConsulta);
+        
+        // --- MENÚ REPORTES ---
+        JMenu menuReports = new JMenu("Reportes");
+        menuReports.setForeground(Color.WHITE);
+        menuReports.setFont(new Font("Arial", Font.BOLD, 12));
+
+        JMenuItem itemReports = new JMenuItem("Reportes");
+        itemReports.setFont(new Font("Arial", Font.PLAIN, 12));
+        itemReports.setBackground(Color.WHITE);
+        itemReports.setForeground(new Color(44, 62, 80));
+        itemReports.addActionListener(e -> mainController.openReports());
+        menuReports.add(itemReports);
+
+        menuBar.add(menuReports);
     }
 
     private void createAuxiliarMenu() {
-        System.out.println("🔧 Configurando menú para AUXILIAR...");
+        System.out.println("Configurando menú para AUXILIAR...");
 
         // --- MENÚ FACTURACIÓN ---
         JMenu menuBilling = new JMenu("Facturación");
         menuBilling.setForeground(Color.WHITE);
         menuBilling.setFont(new Font("Arial", Font.BOLD, 12));
 
-        JMenuItem itemInvoices = new JMenuItem("📋 Facturas");
+        JMenuItem itemInvoices = new JMenuItem("Facturas");
         itemInvoices.setFont(new Font("Arial", Font.PLAIN, 12));
         itemInvoices.setBackground(Color.WHITE);
         itemInvoices.setForeground(new Color(44, 62, 80));
@@ -313,7 +340,7 @@ public class MainWindow extends JFrame {
         });
         menuBilling.add(itemInvoices);
 
-        JMenuItem itemPayments = new JMenuItem("💳 Pagos");
+        JMenuItem itemPayments = new JMenuItem("Pagos");
         itemPayments.setFont(new Font("Arial", Font.PLAIN, 12));
         itemPayments.setBackground(Color.WHITE);
         itemPayments.setForeground(new Color(44, 62, 80));
@@ -329,27 +356,41 @@ public class MainWindow extends JFrame {
         menuBilling.add(itemPayments);
 
         menuBar.add(menuBilling);
+        
+        // --- MENÚ REPORTES ---
+        JMenu menuReports = new JMenu("Reportes");
+        menuReports.setForeground(Color.WHITE);
+        menuReports.setFont(new Font("Arial", Font.BOLD, 12));
+
+        JMenuItem itemReports = new JMenuItem("Reportes");
+        itemReports.setFont(new Font("Arial", Font.PLAIN, 12));
+        itemReports.setBackground(Color.WHITE);
+        itemReports.setForeground(new Color(44, 62, 80));
+        itemReports.addActionListener(e -> mainController.openReports());
+        menuReports.add(itemReports);
+
+        menuBar.add(menuReports);
 
         // --- MENÚ CONSULTA GENERAL ---
         JMenu menuConsult = new JMenu("Consulta");
         menuConsult.setForeground(Color.WHITE);
         menuConsult.setFont(new Font("Arial", Font.BOLD, 12));
 
-        JMenuItem itemPets = new JMenuItem("🐾 Mascotas");
+        JMenuItem itemPets = new JMenuItem("Mascotas");
         itemPets.setFont(new Font("Arial", Font.PLAIN, 12));
         itemPets.setBackground(Color.WHITE);
         itemPets.setForeground(new Color(44, 62, 80));
         itemPets.addActionListener(e -> mainController.openPets());
         menuConsult.add(itemPets);
 
-        JMenuItem itemOwners = new JMenuItem("👨‍👩‍👧‍👦 Propietarios");
+        JMenuItem itemOwners = new JMenuItem("Propietarios");
         itemOwners.setFont(new Font("Arial", Font.PLAIN, 12));
         itemOwners.setBackground(Color.WHITE);
         itemOwners.setForeground(new Color(44, 62, 80));
         itemOwners.addActionListener(e -> mainController.openOwners());
         menuConsult.add(itemOwners);
 
-        JMenuItem itemAppointments = new JMenuItem("📅 Citas");
+        JMenuItem itemAppointments = new JMenuItem("Citas");
         itemAppointments.setFont(new Font("Arial", Font.PLAIN, 12));
         itemAppointments.setBackground(Color.WHITE);
         itemAppointments.setForeground(new Color(44, 62, 80));
@@ -358,7 +399,7 @@ public class MainWindow extends JFrame {
 
         menuBar.add(menuConsult);
 
-        System.out.println("✅ Menú AUXILIAR configurado");
+        System.out.println("Menú AUXILIAR configurado");
     }
 
     public void setUserInfo(User user) {

@@ -1,6 +1,6 @@
-# 🧪 DATOS DE PRUEBA - ClinicaVet2
+# DATOS DE PRUEBA - ClinicaVet2
 
-## 🔐 Credenciales de Acceso
+## Credenciales de Acceso
 
 ### **Administrador:**
 - **Usuario:** admin
@@ -33,7 +33,7 @@
 
 ---
 
-## 👥 Dueños de Mascotas (6 registrados)
+## Dueños de Mascotas (6 registrados)
 
 | Cédula     | Nombre            | Teléfono    | Dirección                           |
 |------------|-------------------|-------------|-------------------------------------|
@@ -46,7 +46,7 @@
 
 ---
 
-## 🐾 Mascotas Registradas (10 mascotas)
+## Mascotas Registradas (10 mascotas)
 
 ### **Perros (5):**
 
@@ -82,7 +82,7 @@
    - Alergias: Polen
    - Vacunas: Triple felina, Rabia
    - Notas: Sensible al polen en primavera
-
+-
 2. **Mimi** - Persa (Hembra, 5 años, 5.5 kg)
    - Dueño: Pedro Gómez
    - Vacunas: Triple felina, Leucemia felina
@@ -105,7 +105,7 @@
 
 ---
 
-## 📅 Citas Programadas (5 citas de ejemplo)
+## Citas Programadas (5 citas de ejemplo)
 
 | Fecha      | Hora  | Duración | Médico           | Mascota | Motivo                  | Estado      |
 |------------|-------|----------|------------------|---------|-------------------------|-------------|
@@ -117,7 +117,7 @@
 
 ---
 
-## ✅ Funcionalidades para Probar
+## Funcionalidades para Probar
 
 ### **1. Gestión de Usuarios (Solo ADMIN)**
 - ✓ Crear nuevos médicos y auxiliares
@@ -159,9 +159,9 @@
 
 ---
 
-## 📋 Historias Clínicas de Ejemplo
+## Historias Clínicas de Ejemplo
 
-### **🐕 Max (Golden Retriever) - Dueño: Juan Pérez**
+### **Max (Golden Retriever) - Dueño: Juan Pérez**
 
 #### Atención #1 - 2024-01-15 a las 10:30
 - **Médico:** Dr. Carlos Mendoza
@@ -183,7 +183,7 @@
 
 ---
 
-### **🐕 Rocky (Bulldog Francés) - Dueño: María Rodríguez**
+### **Rocky (Bulldog Francés) - Dueño: María Rodríguez**
 
 #### Atención #1 - 2024-03-20 a las 14:00
 - **Médico:** Dr. Carlos Mendoza
@@ -227,7 +227,7 @@
 
 ---
 
-### **🐕 Bruno (Pastor Alemán) - Dueño: Carlos Sánchez**
+### **Bruno (Pastor Alemán) - Dueño: Carlos Sánchez**
 
 #### Atención #1 - 2024-06-05 a las 15:30
 - **Médico:** Dr. Carlos Mendoza
@@ -249,7 +249,7 @@
 
 ---
 
-### **🐕 Toby (Beagle) - Dueño: Laura Martínez**
+### **Toby (Beagle) - Dueño: Laura Martínez**
 
 #### Atención #1 - 2024-07-01 a las 11:00
 - **Médico:** Dra. Ana García
@@ -319,7 +319,7 @@
 
 ---
 
-## 📋 Notas Importantes
+## Notas Importantes
 
 - **Persistencia:** Todos los datos se guardan automáticamente en `data/*.json` al cerrar la aplicación
 - **Formato de fecha:** YYYY-MM-DD (ejemplo: 2025-11-08)
@@ -353,7 +353,7 @@
 
 ---
 
-### **🐕 Rocky (Bulldog Francés) - Dueño: María Rodríguez**
+### **Rocky (Bulldog Francés) - Dueño: María Rodríguez**
 
 #### Atención #1 - 2025-09-20 a las 14:00
 - **Médico:** Dra. Ana García
@@ -406,7 +406,7 @@
 
 ---
 
-### **🐕 Bruno (Pastor Alemán) - Dueño: Carlos Sánchez**
+### **Bruno (Pastor Alemán) - Dueño: Carlos Sánchez**
 
 #### Atención #1 - 2025-07-05 a las 15:00
 - **Médico:** Dra. Ana García
@@ -440,7 +440,7 @@
 
 ---
 
-### **🐕 Toby (Beagle cachorro) - Dueño: Laura Martínez**
+### **Toby (Beagle cachorro) - Dueño: Laura Martínez**
 
 #### Atención #1 - 2025-10-01 a las 08:30
 - **Médico:** Dr. Carlos Mendoza
@@ -491,7 +491,7 @@
 
 
 
-## 📋 Notas Importantes
+## Notas Importantes
 
 - **Persistencia:** Todos los datos se guardan automáticamente en `data/*.json` al cerrar la aplicación
 - **Formato de fecha:** YYYY-MM-DD (ejemplo: 2025-11-08)

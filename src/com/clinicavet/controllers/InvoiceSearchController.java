@@ -4,8 +4,6 @@ import com.clinicavet.model.entities.Invoice;
 import com.clinicavet.model.services.IInvoiceService;
 import com.clinicavet.model.services.IPaymentService;
 import com.clinicavet.views.InvoiceSearchDialog;
-
-import javax.swing.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -31,11 +29,11 @@ public class InvoiceSearchController {
         
         setupListeners();
         
-        System.out.println("✅ [InvoiceSearchController] Inicializado correctamente");
+        System.out.println("[InvoiceSearchController] Inicializado correctamente");
     }
 
     private void setupListeners() {
-        System.out.println("🔧 Configurando listeners...");
+        System.out.println("Configurando listeners...");
         
         // Búsqueda en tiempo real por cliente
         view.txtSearch.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
@@ -122,7 +120,7 @@ public class InvoiceSearchController {
                         .collect(Collectors.toList());
                 System.out.println("     Antes: " + before + " | Después: " + results.size());
             } catch (IllegalArgumentException ex) {
-                System.err.println("⚠️ Estado inválido: " + status);
+                System.err.println("Estado inválido: " + status);
             }
         }
 

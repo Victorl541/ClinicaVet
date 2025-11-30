@@ -4,7 +4,6 @@ import com.clinicavet.model.entities.Invoice;
 import com.clinicavet.model.entities.InvoiceItem;
 import com.clinicavet.model.entities.Owner;
 import com.clinicavet.util.JsonHelper;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -90,7 +89,8 @@ public class InvoiceRepository implements IInvoiceRepository {
                 sb.append("    \"status\": ").append(JsonHelper.escapeJson(invoice.getStatus().toString())).append(",\n");
                 sb.append("    \"subtotal\": ").append(JsonHelper.toJson(invoice.getSubtotal())).append(",\n");
                 sb.append("    \"tax\": ").append(JsonHelper.toJson(invoice.getTax())).append(",\n");
-                sb.append("    \"total\": ").append(JsonHelper.toJson(invoice.getTotal())).append("\n");
+                sb.append("    \"total\": ").append(JsonHelper.toJson(invoice.getTotal())).append(",\n");
+                sb.append("    \"totalPaid\": ").append(JsonHelper.toJson(invoice.getTotalPaid())).append("\n");
                 sb.append("  }");
                 if (i < invoices.size() - 1) sb.append(",");
                 sb.append("\n");
@@ -98,9 +98,9 @@ public class InvoiceRepository implements IInvoiceRepository {
             
             sb.append("]\n");
             JsonHelper.writeJsonFile(FILE_NAME, sb.toString());
-            System.out.println("✅ [InvoiceRepository] Facturas guardadas: " + invoices.size());
+            System.out.println("[InvoiceRepository] Facturas guardadas: " + invoices.size());
         } catch (Exception ex) {
-            System.err.println("❌ [InvoiceRepository] Error al guardar facturas: " + ex.getMessage());
+            System.err.println("[InvoiceRepository] Error al guardar facturas: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -108,7 +108,7 @@ public class InvoiceRepository implements IInvoiceRepository {
     @Override
     public void load() {
         try {
-            System.out.println("📖 [InvoiceRepository] Iniciando carga de facturas...");
+            System.out.println("[InvoiceRepository] Iniciando carga de facturas...");
             
             String content = JsonHelper.readJsonFile(FILE_NAME);
             
@@ -131,7 +131,7 @@ public class InvoiceRepository implements IInvoiceRepository {
             }
             
             String[] invoiceStrings = splitByObject(content);
-            System.out.println("📖 [InvoiceRepository] Encontrados " + invoiceStrings.length + " facturas");
+            System.out.println("[InvoiceRepository] Encontrados " + invoiceStrings.length + " facturas");
             
             for (String invoiceStr : invoiceStrings) {
                 try {
@@ -141,13 +141,13 @@ public class InvoiceRepository implements IInvoiceRepository {
                         System.out.println("✓ Factura cargada: " + invoice.getInvoiceNumber());
                     }
                 } catch (Exception ex) {
-                    System.err.println("⚠️ Error parsing factura: " + ex.getMessage());
+                    System.err.println("Error parsing factura: " + ex.getMessage());
                 }
             }
             
-            System.out.println("✅ [InvoiceRepository] Total cargado: " + invoices.size());
+            System.out.println("[InvoiceRepository] Total cargado: " + invoices.size());
         } catch (Exception ex) {
-            System.err.println("❌ Error al cargar facturas: " + ex.getMessage());
+            System.err.println("Error al cargar facturas: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -163,6 +163,7 @@ public class InvoiceRepository implements IInvoiceRepository {
             String subtotalStr = extractJsonValue(jsonStr, "subtotal");
             String taxStr = extractJsonValue(jsonStr, "tax");
             String totalStr = extractJsonValue(jsonStr, "total");
+            String totalPaidStr = extractJsonValue(jsonStr, "totalPaid");
             
             if (id.isEmpty() || invoiceNumber.isEmpty() || clientId.isEmpty()) {
                 return null;
@@ -174,7 +175,7 @@ public class InvoiceRepository implements IInvoiceRepository {
                 if (owner.isPresent()) {
                     client = owner.get();
                 } else {
-                    System.err.println("⚠️ Cliente no encontrado: " + clientId);
+                    System.err.println("Cliente no encontrado: " + clientId);
                     return null;
                 }
             }
@@ -190,12 +191,19 @@ public class InvoiceRepository implements IInvoiceRepository {
             invoice.setTax(Double.parseDouble(taxStr));
             invoice.setTotal(Double.parseDouble(totalStr));
             
+            // Cargar totalPaid si existe
+            if (!totalPaidStr.isEmpty()) {
+                invoice.setTotalPaid(Double.parseDouble(totalPaidStr));
+            } else {
+                invoice.setTotalPaid(0.0);
+            }
+            
             List<InvoiceItem> items = parseItems(jsonStr);
             invoice.setItems(items);
             
             return invoice;
         } catch (Exception ex) {
-            System.err.println("❌ Error parsing invoice: " + ex.getMessage());
+            System.err.println("Error parsing invoice: " + ex.getMessage());
             return null;
         }
     }
@@ -225,11 +233,11 @@ public class InvoiceRepository implements IInvoiceRepository {
                     item.setCategory(extractJsonValue(itemStr, "category"));
                     items.add(item);
                 } catch (Exception ex) {
-                    System.err.println("⚠️ Error parsing item: " + ex.getMessage());
+                    System.err.println("Error parsing item: " + ex.getMessage());
                 }
             }
         } catch (Exception ex) {
-            System.err.println("⚠️ Error en parseItems: " + ex.getMessage());
+            System.err.println("Error en parseItems: " + ex.getMessage());
         }
         
         return items;

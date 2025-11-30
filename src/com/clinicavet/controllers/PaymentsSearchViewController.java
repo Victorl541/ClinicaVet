@@ -3,14 +3,13 @@ package com.clinicavet.controllers;
 import com.clinicavet.model.entities.Invoice;
 import com.clinicavet.model.services.IInvoiceService;
 import com.clinicavet.model.services.IPaymentService;
-import com.clinicavet.views.PaymentsSearchDialog;
 import com.clinicavet.views.PaymentRegistrationDialog;
-
-import javax.swing.*;
+import com.clinicavet.views.PaymentsSearchDialog;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.swing.*;
 
 public class PaymentsSearchViewController {
     
@@ -34,15 +33,15 @@ public class PaymentsSearchViewController {
         
         setupListeners();
         addPaymentButton();
-        // ✅ NO llamar performSearch() al inicio - tabla empieza vacía
+        // NO llamar performSearch() al inicio - tabla empieza vacía
         
-        System.out.println("✅ [PaymentsSearchViewController] Inicializado");
+        System.out.println("[PaymentsSearchViewController] Inicializado");
     }
     
     private void setupListeners() {
-        System.out.println("🔧 Configurando listeners...");
+        System.out.println("Configurando listeners...");
         
-        // ✅ Búsqueda en tiempo real - SOLO cuando hay texto
+        // Búsqueda en tiempo real - SOLO cuando hay texto
         view.txtSearch.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(javax.swing.event.DocumentEvent e) {
@@ -107,7 +106,7 @@ public class PaymentsSearchViewController {
      * Agregar botón de registrar pago en el diálogo
      */
     private void addPaymentButton() {
-        JButton btnPayment = new JButton("💳 Registrar Pago");
+        JButton btnPayment = new JButton("Registrar Pago");
         btnPayment.setPreferredSize(new java.awt.Dimension(140, 35));
         btnPayment.setBackground(new java.awt.Color(46, 204, 113));
         btnPayment.setForeground(java.awt.Color.WHITE);
@@ -140,7 +139,7 @@ public class PaymentsSearchViewController {
      * Registrar pago desde búsqueda
      */
     private void registerPayment() {
-        System.out.println("💳 Registrando pago desde búsqueda...");
+        System.out.println("Registrando pago desde búsqueda...");
         
         int selectedRow = view.getSelectedRow();
         
@@ -184,7 +183,7 @@ public class PaymentsSearchViewController {
             dialog.setVisible(true);
             
         } catch (Exception e) {
-            System.err.println("❌ Error: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
             view.showMessage("Error: " + e.getMessage());
         }
     }
@@ -206,7 +205,7 @@ public class PaymentsSearchViewController {
 
         List<Invoice> results = allInvoices.stream()
                 .filter(inv -> {
-                    // ✅ FILTRO PRINCIPAL: SOLO FACTURAS PENDIENTE
+                    // FILTRO PRINCIPAL: SOLO FACTURAS PENDIENTE
                     if (inv.getStatus() != Invoice.InvoiceStatus.PENDIENTE) {
                         return false;
                     }
