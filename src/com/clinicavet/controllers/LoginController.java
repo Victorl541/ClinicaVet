@@ -22,37 +22,65 @@ public class LoginController {
         this.userService = userService;
         this.rolService = rolService;
         this.mainController = mainController;
+        
+        
+        this.mainController.setLoginController(this);
     }
 
     public boolean login(String email, String password, Login loginView) {
-        Optional<User> opt = userService.getByEmail(email);
+        // Validar campos vacíos
+        if (email == null || email.trim().isEmpty() || 
+            password == null || password.trim().isEmpty()) {
+            showErrorMessage(loginView, "Email y contraseña son requeridos");
+            return false;
+        }
+
+        // Buscar usuario
+        Optional<User> opt = userService.getByEmail(email.trim());
 
         if (opt.isEmpty()) {
+            showErrorMessage(loginView, "Usuario no encontrado");
             return false;
         }
 
         User user = opt.get();
 
-        if (!user.isActivo() || !user.getPassword().equals(password)) {
+        // Validar usuario activo
+        if (!user.isActivo()) {
+            showErrorMessage(loginView, "Usuario inactivo. Contacta al administrador");
             return false;
         }
 
+        // Validar contraseña
+        if (!user.getPassword().equals(password)) {
+            showErrorMessage(loginView, "Contraseña incorrecta");
+            return false;
+        }
+
+        // Validar rol asignado
+        if (user.getRol() == null) {
+            showErrorMessage(loginView, "Usuario sin rol asignado");
+            return false;
+        }
+
+        // Login exitoso
         mainController.setCurrentUser(user);
 
         SwingUtilities.invokeLater(() -> {
             MainWindow mainWindow = new MainWindow();
-            mainWindow.setController(mainController);
-            mainWindow.setLoginController(this);
+            mainWindow.setMainController(mainController);
             mainController.setMainWindow(mainWindow);
-            mainWindow.updateUserHeader("Usuario: " + user.getName() + " | Rol: " + user.getRol().getName());
             
-            // Establecer permisos según rol
-            mainWindow.setUserPermissions(user);
+            // Configurar información del usuario
+            mainWindow.setUserInfo(user);
+            
+            // Configurar menú según rol
+            mainWindow.setupMenu();
             
             mainWindow.setVisible(true);
             
-            // Cargar vista de inicio por defecto
-            mainWindow.loadDefaultView();
+            // Cargar vista de inicio
+            mainController.openHome();
         });
 
         loginView.dispose();
@@ -60,17 +88,54 @@ public class LoginController {
     }
 
     public void logout() {
-        // Cerrar sesión del controlador principal
-        mainController.logout();
+        int confirm = JOptionPane.showConfirmDialog(
+                null,
+                "¿Estás seguro de que deseas cerrar sesión?",
+                "Confirmar Cierre de Sesión",
+                JOptionPane.YES_NO_OPTION
+        );
 
-        // Mostrar Login nuevamente
-        SwingUtilities.invokeLater(() -> {
-            Login login = new Login(this);
-            login.setVisible(true);
-        });
+        if (confirm == JOptionPane.YES_OPTION) {
+            mainController.logout();
+
+            SwingUtilities.invokeLater(() -> {
+                Login login = new Login(this);
+                login.setVisible(true);
+            });
+        }
     }
 
-    public void onLogout() {
-        logout();
+    // ===== MÉTODOS AUXILIARES =====
+
+    private void showErrorMessage(java.awt.Component parent, String message) {
+        JOptionPane.showMessageDialog(
+                parent,
+                message,
+                "Error de Autenticación",
+                JOptionPane.ERROR_MESSAGE
+        );
+    }
+
+    private void showSuccessMessage(java.awt.Component parent, String message) {
+        JOptionPane.showMessageDialog(
+                parent,
+                message,
+                "Éxito",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+
+    // ===== GETTERS =====
+
+    public IUserService getUserService() {
+        return userService;
+    }
+
+    public RolService getRolService() {
+        return rolService;
+    }
+
+    public MainController getMainController() {
+        return mainController;
     }
 }

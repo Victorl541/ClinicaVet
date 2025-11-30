@@ -13,14 +13,17 @@ public class HomeController {
     private final IPetService petService;
     private final IOwnerService ownerService;
     private final IAppointmentService appointmentService;
+    private final MainController mainController;
 
     public HomeController(HomeView view, IUserService userService, IPetService petService,
-                        IOwnerService ownerService, IAppointmentService appointmentService) {
+                        IOwnerService ownerService, IAppointmentService appointmentService,
+                        MainController mainController) {
         this.view = view;
         this.userService = userService;
         this.petService = petService;
         this.ownerService = ownerService;
         this.appointmentService = appointmentService;
+        this.mainController = mainController;
 
         loadStats();
     }
@@ -28,12 +31,12 @@ public class HomeController {
     private void loadStats() {
         // Contar médicos activos
         long medicosActivos = userService.listUsers().stream()
-                .filter(u -> u.isActivo() && u.getRol() != null && u.getRol().getName().equals("MEDICO"))
+                .filter(u -> u.isActivo() && u.getRol() != null && u.getRol().getName().equalsIgnoreCase("MEDICO"))
                 .count();
 
         // Contar auxiliares activos
         long auxiliaresActivos = userService.listUsers().stream()
-                .filter(u -> u.isActivo() && u.getRol() != null && u.getRol().getName().equals("AUXILIAR"))
+                .filter(u -> u.isActivo() && u.getRol() != null && u.getRol().getName().equalsIgnoreCase("AUXILIAR"))
                 .count();
 
         // Contar mascotas creadas

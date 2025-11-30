@@ -1,0 +1,198 @@
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "invoiceNumber": "INV-20251130-00001",
+    "invoiceDate": "2025-11-25",
+    "clientId": "1010234567",
+    "items": [
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440001",
+        "description": "Consulta General Canina",
+        "quantity": 1,
+        "unitPrice": 50000.0,
+        "category": "SERVICIO"
+      },
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440002",
+        "description": "Vacuna Antirrábica",
+        "quantity": 1,
+        "unitPrice": 35000.0,
+        "category": "MEDICAMENTO"
+      }
+    ],
+    "notes": "Mascota de cliente frecuente - Juan Pérez",
+    "status": "ANULADA",
+    "subtotal": 85000.0,
+    "tax": 16150.0,
+    "total": 101150.0
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "invoiceNumber": "INV-20251130-00002",
+    "invoiceDate": "2025-11-26",
+    "clientId": "1020345678",
+    "items": [
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440003",
+        "description": "Limpieza Dental Felina",
+        "quantity": 1,
+        "unitPrice": 120000.0,
+        "category": "SERVICIO"
+      },
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440004",
+        "description": "Anestesia Local",
+        "quantity": 1,
+        "unitPrice": 25000.0,
+        "category": "MEDICAMENTO"
+      },
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440005",
+        "description": "Collar Isabelino",
+        "quantity": 1,
+        "unitPrice": 15000.0,
+        "category": "PRODUCTO"
+      }
+    ],
+    "notes": "Procedimiento exitoso sin complicaciones - María Rodríguez",
+    "status": "PENDIENTE",
+    "subtotal": 160000.0,
+    "tax": 30400.0,
+    "total": 190400.0
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440003",
+    "invoiceNumber": "INV-20251130-00003",
+    "invoiceDate": "2025-11-27",
+    "clientId": "1030456789",
+    "items": [
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440006",
+        "description": "Ecografía Abdominal",
+        "quantity": 1,
+        "unitPrice": 150000.0,
+        "category": "SERVICIO"
+      },
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440007",
+        "description": "Suero Fisiológico",
+        "quantity": 2,
+        "unitPrice": 8000.0,
+        "category": "MEDICAMENTO"
+      }
+    ],
+    "notes": "Diagnóstico: Gastritis leve, seguimiento en 1 semana - Pedro Gómez",
+    "status": "PENDIENTE",
+    "subtotal": 166000.0,
+    "tax": 31540.0,
+    "total": 197540.0
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440004",
+    "invoiceNumber": "INV-20251130-00004",
+    "invoiceDate": "2025-11-28",
+    "clientId": "1040567890",
+    "items": [
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440008",
+        "description": "Esterilización Quirúrgica",
+        "quantity": 1,
+        "unitPrice": 250000.0,
+        "category": "SERVICIO"
+      },
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440009",
+        "description": "Anestesia General",
+        "quantity": 1,
+        "unitPrice": 80000.0,
+        "category": "MEDICAMENTO"
+      },
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440010",
+        "description": "Antibiótico Postoperatorio",
+        "quantity": 7,
+        "unitPrice": 12000.0,
+        "category": "MEDICAMENTO"
+      }
+    ],
+    "notes": "Cirugía exitosa, recuperación normal, usar collar isabelino 10 días - Laura Martínez",
+    "status": "PAGADA",
+    "subtotal": 414000.0,
+    "tax": 78660.0,
+    "total": 492660.0
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440005",
+    "invoiceNumber": "INV-20251130-00005",
+    "invoiceDate": "2025-11-29",
+    "clientId": "1050678901",
+    "items": [
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440011",
+        "description": "Radiografía Torácica",
+        "quantity": 2,
+        "unitPrice": 75000.0,
+        "category": "SERVICIO"
+      },
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440012",
+        "description": "Amoxicilina 500mg",
+        "quantity": 14,
+        "unitPrice": 5000.0,
+        "category": "MEDICAMENTO"
+      }
+    ],
+    "notes": "Tratamiento para infección respiratoria, 14 días de antibiótico - Carlos Sánchez",
+    "status": "PENDIENTE",
+    "subtotal": 220000.0,
+    "tax": 41800.0,
+    "total": 261800.0
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440006",
+    "invoiceNumber": "INV-20251130-00006",
+    "invoiceDate": "2025-11-30",
+    "clientId": "1060789012",
+    "items": [
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440013",
+        "description": "Examen Oftalmológico",
+        "quantity": 1,
+        "unitPrice": 95000.0,
+        "category": "SERVICIO"
+      },
+      {
+        "id": "660e8400-e29b-41d4-a716-446655440014",
+        "description": "Gotas Oftalmológicas",
+        "quantity": 2,
+        "unitPrice": 18000.0,
+        "category": "MEDICAMENTO"
+      }
+    ],
+    "notes": "Conjuntivitis alérgica tratamiento recomendado - Ana Torres",
+    "status": "PAGADA",
+    "subtotal": 131000.0,
+    "tax": 24890.0,
+    "total": 155890.0
+  },
+  {
+    "id": "2733d33e-859c-459c-ae3c-2166b6990de6",
+    "invoiceNumber": "FAC-20251130-00007",
+    "invoiceDate": "2025-11-30",
+    "clientId": "1020345678",
+    "items": [
+      {
+        "id": "5735f781-ef4b-4183-aa43-5bee0520b00d",
+        "description": "vacuna de la rabia",
+        "quantity": 1,
+        "unitPrice": 30000.0,
+        "category": "MEDICAMENTO"
+      }
+    ],
+    "notes": "",
+    "status": "PAGADA",
+    "subtotal": 30000.0,
+    "tax": 5700.0,
+    "total": 35700.0
+  }
+]

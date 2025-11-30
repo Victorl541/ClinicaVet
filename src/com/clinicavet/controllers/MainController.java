@@ -6,6 +6,8 @@ import com.clinicavet.model.services.IMedicalRecordService;
 import com.clinicavet.model.services.IOwnerService;
 import com.clinicavet.model.services.IPetService;
 import com.clinicavet.model.services.IUserService;
+import com.clinicavet.model.services.IInvoiceService;
+import com.clinicavet.model.services.IPaymentService;
 import com.clinicavet.model.services.RolService;
 import com.clinicavet.views.AppointmentsListView;
 import com.clinicavet.views.HomeView;
@@ -14,8 +16,13 @@ import com.clinicavet.views.MedicalRecordsListView;
 import com.clinicavet.views.OwnersListView;
 import com.clinicavet.views.PetsListView;
 import com.clinicavet.views.UsersListView;
+import com.clinicavet.views.InvoicesListView;
+import com.clinicavet.views.PaymentsView;
+
+import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class MainController {
 
@@ -25,19 +32,25 @@ public class MainController {
     private final IPetService petService;
     private final IAppointmentService appointmentService;
     private final IMedicalRecordService medicalRecordService;
+    private final IInvoiceService invoiceService;
+    private final IPaymentService paymentService;
 
     private MainWindow mainWindow;
     private User currentUser;
+    private LoginController loginController;
 
     public MainController(IUserService userService, RolService rolService, IOwnerService ownerService, 
                          IPetService petService, IAppointmentService appointmentService,
-                         IMedicalRecordService medicalRecordService) {
+                         IMedicalRecordService medicalRecordService, IInvoiceService invoiceService,
+                         IPaymentService paymentService) {
         this.userService = userService;
         this.rolService = rolService;
         this.ownerService = ownerService;
         this.petService = petService;
         this.appointmentService = appointmentService;
         this.medicalRecordService = medicalRecordService;
+        this.invoiceService = invoiceService;
+        this.paymentService = paymentService;
     }
 
     public void setMainWindow(MainWindow mainWindow) {
@@ -56,13 +69,21 @@ public class MainController {
         return userService;
     }
 
+    public void setLoginController(LoginController loginController) {
+        this.loginController = loginController;
+    }
+
+    public LoginController getLoginController() {
+        return loginController;
+    }
+
     // ========================
     // HOME
     // ========================
 
     public void openHome() {
         HomeView view = new HomeView();
-        new HomeController(view, userService, petService, ownerService, appointmentService);
+        new HomeController(view, userService, petService, ownerService, appointmentService, this);
         mainWindow.showView("home", view);
     }
 
@@ -149,14 +170,142 @@ public class MainController {
     }
 
     // ========================
+    // INVOICES (Solo AUXILIAR)
+    // ========================
+
+    public void openInvoices() {
+        System.out.println("📋 [MainController] Abriendo Facturas...");
+        
+        // Validar que el usuario sea AUXILIAR
+        if (!isUserRoleAuxiliar()) {
+            throw new SecurityException("Acceso denegado: Solo AUXILIAR puede acceder a Facturación");
+        }
+        
+        InvoicesListView view = new InvoicesListView();
+        new InvoicesController(view, invoiceService, ownerService, paymentService);
+        mainWindow.showView("invoices", view);
+        
+        System.out.println("✅ Facturas abierto");
+    }
+
+    // ========================
+    // PAYMENTS (Solo AUXILIAR)
+    // ========================
+
+    public void openPaymentsTab() {
+        System.out.println("💰 [MainController] Abriendo Pagos...");
+        
+        // Validar que el usuario sea AUXILIAR
+        if (!isUserRoleAuxiliar()) {
+            throw new SecurityException("Acceso denegado: Solo AUXILIAR puede acceder a Pagos");
+        }
+
+        // ✅ USAR PaymentsView CON PaymentsViewController
+        PaymentsView view = new PaymentsView();
+        new PaymentsViewController(view, paymentService, invoiceService);
+        mainWindow.showView("payments", view);
+        
+        System.out.println("✅ Tab de Pagos abierto");
+    }
+
+    // ========================
+    // INVOICE SERVICES
+    // ========================
+
+    public IInvoiceService getInvoiceService() {
+        return invoiceService;
+    }
+
+    public IPaymentService getPaymentService() {
+        return paymentService;
+    }
+
+    public List<?> listAllInvoices() {
+        return invoiceService.listInvoices();
+    }
+
+    public Optional<?> findInvoiceById(UUID id) {
+        return invoiceService.getInvoiceById(id);
+    }
+
+    public String generateInvoiceNumber() {
+        return invoiceService.generateInvoiceNumber();
+    }
+
+    // ========================
+    // PAYMENT SERVICES
+    // ========================
+
+    public double getTotalPaidByInvoice(UUID invoiceId) {
+        return paymentService.getTotalPaidByInvoice(invoiceId);
+    }
+
+    public double getRemainingAmount(UUID invoiceId) {
+        return paymentService.getRemainingAmount(invoiceId);
+    }
+
+    public List<?> getPaymentsByInvoice(UUID invoiceId) {
+        return paymentService.findByInvoiceId(invoiceId);
+    }
+
+    // ========================
+    // SECURITY & VALIDATION
+    // ========================
+
+    private boolean isUserRoleAuxiliar() {
+        if (currentUser == null) {
+            System.err.println("⚠️ Usuario actual es null");
+            return false;
+        }
+        
+        boolean isAuxiliar = currentUser.getRol() != null && 
+               currentUser.getRol().getName().equalsIgnoreCase("AUXILIAR");
+        
+        System.out.println("🔐 Validación de rol AUXILIAR: " + isAuxiliar);
+        return isAuxiliar;
+    }
+
+    private boolean isUserRoleMedico() {
+        if (currentUser == null) {
+            return false;
+        }
+        return currentUser.getRol() != null && 
+               currentUser.getRol().getName().equalsIgnoreCase("MEDICO");
+    }
+
+    private boolean isUserRoleAdmin() {
+        if (currentUser == null) {
+            return false;
+        }
+        return currentUser.getRol() != null && 
+               currentUser.getRol().getName().equalsIgnoreCase("ADMIN");
+    }
+
+    public boolean canAccessInvoices() {
+        return isUserRoleAuxiliar();
+    }
+
+    public boolean canAccessMedicalRecords() {
+        return isUserRoleMedico();
+    }
+
+    public boolean canAccessUsers() {
+        return isUserRoleAdmin();
+    }
+
+    // ========================
     // LOGOUT
     // ========================
 
     public void logout() {
+        System.out.println("🔒 [MainController] Cerrando sesión...");
+        
         if (mainWindow != null) {
             mainWindow.setVisible(false);
             mainWindow.dispose();
         }
         currentUser = null;
+        
+        System.out.println("✅ Sesión cerrada");
     }
 }
